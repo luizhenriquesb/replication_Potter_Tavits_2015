@@ -1,0 +1,16 @@
+---
+title: "Anotações"
+output: pdf_document
+date: "2023-12-24"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Próximos passos
+
+1.  Rodar primeiro a análise dos outliers OK
+2.  Rodar os modelos (falta o modelo da nota 56)
+3.  Discutir endogeneidade
+4.  Fazer checagem do modelo

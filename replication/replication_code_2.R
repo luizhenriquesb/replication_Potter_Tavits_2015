@@ -1,5 +1,7 @@
-# Replication Code
 
+library(tidyverse)
+
+# Replication Code
 
 ##########################
 #### Campaign Finance Laws 
@@ -35,7 +37,6 @@
 # eligmedia \ Free media eligibility
 # partyspend \ Whether limits on spending
 
-
 ##########################
 #### Replication Code
 ##########################
@@ -44,14 +45,15 @@
 
 # read in data
 library(foreign)
-raw.data<-read.dta("potter_tavits_data.dta")
-raw.data<-read.dta("data/potter_tavits_data.dta")
+raw.data <- read.dta("data/potter_tavits_data.dta")
+
+glimpse(raw.data)
+
 # drop outliers
 campaigns <- subset(raw.data, postenp < 9.2)
 
-
 # create post-1974 subset for endogeneity test
-later1974<-subset(campaigns, demin>1973)
+later1974 <- subset(campaigns, demin > 1973)
 
 # estimate Model 1 in Table 2
 library(arm)
@@ -83,15 +85,21 @@ rep.list <- list(full, post1974)
 texreg(rep.list)
 
 # construct the endogeneity plot in Figure 1
-plot(campaigns$fundparity4 
-     ~ campaigns$preenp, 
-     pch=20, col="grey20", cex=1.5, 
-     xlab="Previous ENP", 
-     ylab="Current Fund Parity Value")
-display(lm(fundparity4 ~ preenp, data=campaigns))
-abline(a=0.82, b=-0.04, lwd=2)	
+plot(
+  campaigns$fundparity4
+  ~ campaigns$preenp,
+  pch = 20, col = "grey20", cex = 1.5,
+  xlab = "Previous ENP",
+  ylab = "Current Fund Parity Value"
+)
+display(lm(fundparity4 ~ preenp, data = campaigns))
+abline(a = 0.82, b = -0.04, lwd = 2)
 
-# model to ensure that all fund parity metric components are exerting similarly-signed influences (this model is mentioned in footnote 44)
+# model to ensure that all fund parity metric components are exerting similarly-signed 
+# influences (this model is mentioned in footnote 44)
+
+# OBS: acho que está se refereindo a nota 42
+
 components<-lm(postenp ~ directelig 
                + partyspend
                + donorlimit
@@ -104,8 +112,14 @@ components<-lm(postenp ~ directelig
                + log(avemag):fract, 
                data=campaigns)
 display(components)
+summary(components)
 
-# model to ensure that differences between legal rules and actual empirical practice in a country are not driving our results (this model is mentioned in footnote 45)
+# model to ensure that differences between legal rules and actual empirical practice 
+# in a country are not driving our results (this model is mentioned in footnote 45)
+
+# OBS: aqui é dito que este modelo foi citado na nota de rodapé 45, mas, na verdade,
+# ele aparece na nota 43.
+
 rules.practice<-lm(postenp ~ fundparity4
                    + rulelaw
                    + fundparity4*rulelaw
@@ -118,7 +132,9 @@ rules.practice<-lm(postenp ~ fundparity4
                    data=campaigns)
 display(rules.practice)
 
-# model to ensure that including legal threshold (which eliminates a large number of our observations due to data availability) does not undercut our results (this model is mentioned in footnote 56) 
+# model to ensure that including legal threshold (which eliminates a large number 
+# of our observations due to data availability) does not undercut our results 
+# (this model is mentioned in footnote 56) 
 threshold<-lm(postenp ~ fundparity4
               + thresh
               + demyears
@@ -129,3 +145,4 @@ threshold<-lm(postenp ~ fundparity4
               + log(avemag):fract, 
               data=campaigns)
 display(threshold)
+
