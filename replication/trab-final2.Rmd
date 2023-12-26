@@ -18,15 +18,21 @@ library(lmtest)
 library(sandwich)
 ```
 
-**Universidade de São Paulo**\
-**Falcudade de Filosofia, Letras e Ciências Humanas**\
-**Departamento de Ciência Política**\
-Disciplina: Métodos Quantitativos em Ciência Política IV\
-Docente: Prof. Dr. Manoel Galdino\
-Discente: Luiz Henrique da Silva Batista (Número USP: 12687228)\
+**Universidade de São Paulo**
+
+**Falcudade de Filosofia, Letras e Ciências Humanas**
+
+**Departamento de Ciência Política**
+
+Disciplina: Métodos Quantitativos em Ciência Política IV
+
+Docente: Prof. Dr. Manoel Galdino
+
+Discente: Luiz Henrique da Silva Batista (Número USP: 12687228)
+
 Tema: Replicação do artigo *O impacto das leis de financiamento de campanha na competição partidária* (Potter & Tavits, 2013).
 
-## Introdução
+**Introdução**
 
 Este trabalho é uma replicação das análises de regressão linear realizadas por Potter e Tavits (2013) para embasarem a tese de que as leis de financiamento de campanha impactam a competição partidária. Os autores reconhecem que o tamanho do sistema partidário é afetado pelas regras eleitorais e as clivagens sociais, conforme boa parte da literatura têm mostrado. No entanto, defendem que, mesmo controlando pelas variáveis institucionais e sociológicas, o conjunto de regras que estruturam o financiamento de campanhas apresentam forte efeito preditivo na competição entre os partidos.
 
@@ -46,13 +52,13 @@ $$
 NEP = \alpha + \beta_1 \cdot X_{Fund\ Parity} + \beta_2 \cdot X_2 +\ ...\ + \beta_k \cdot X_k + \epsilon
 $$
 
-## Descrição da base de dados
+**Descrição da base de dados**
 
 A base de dados utilizada pelos autores contém informações sobre 124 países. Além do número efetivo de cada país, dos critérios para a construção do índice de paridade de financiamento e do próprio índice, a base armazena variáveis institucionais, como a forma do estado e o sistema de governo, e sociológicas, como as diferenças etnolinguísticas existentes no país.
 
 Além disso, os dados correspondem a dois momentos no tempo: 2003 e 2012. Mas isso não para todos os países. Isso porque os dados foram coletados através de fontes variadas. O número efetivo de partidos, por exemplo, foi obtido através de Gallagher e Mitchell (2008), complementado por dados disponibilizados por Adam Carr e pela European Elections Database. Já as observações a respeito do regime de financiamento das campanhas foram obtidas por meio do Internacional IDEA, pesquisa conduzida por Austin e Tjersnstrom (2003). A descrição completa das variáveis pode ser acessada pelo codebook.
 
-## Replicação dos resultados
+**Replicação dos resultados**
 
 Os autores apresentam dois modelos no artigo. O primeiro deles com todas as democracias e o segundo somente com países que se tornaram democracias depois de 1974, recorte temporal justificado por ser uma das maneiras de se lidar com uma suposta endogeneidade dos dados. Voltaremos a isso mais a frente.
 
@@ -67,13 +73,15 @@ Para identificar valores outliers, vamos utilizar três métodos.
 raw_data <- read_dta("data/potter_tavits_data.dta")
 ```
 
-## Análise dos outliers
+**Análise dos outliers**
 
-### 1. Boxplot
+Analisamos os outliers através de três maneiras: 1) boxplot da variável *postenp*, 2) gráfico dos resíduos pelas observações influentes e 3) análise dos resíduos padronizados. O segundo e terceiro método analisa os outliers com base no modelo de regressão. Assim, o modelo que usamos foi o modelo 1 (all democracies) que os autores apresentam no artigo, sem a exlcusão, evidentemente, dos outliers, já que o propósito aqui é justamente identificá-los.
+
+**1. Boxplot**
 
 Os dois valores outliers do boxplot são `r round((boxplot(raw_data$postenp, plot = FALSE)$out[1]),1)` e `r round((boxplot(raw_data$postenp, plot = FALSE)$out[2]),1)`, os quais correspondem, respectivamente, a Albania (2003) e a Libéria (2012). Lembrando que, no R, o valor default para multiplicação do intervalo interquartil (IQR) é 1.5. Em outros softwares o padrão pode ser outro.
 
-```{r message=FALSE, warning=FALSE, fig.align='center', fig.width=3, fig.height=4}
+```{r message=FALSE, warning=FALSE, fig.align='center', fig.width=3, fig.height=4, out.width="30%", out.height="40%"}
 raw_data |>
   ggplot() +
   aes(y = postenp) +
@@ -89,11 +97,11 @@ raw_data |>
   )
 ```
 
-### 2. Gráfico dos resíduos pelas observações influentes
+**2. Gráfico dos resíduos pelas observações influentes**
 
-Outra forma de analisar os outliers é através de uma análise gráfica dos resíduos pelas observações influentes. Aqui, é necessário primeiro rodar o modelo para depois plotar o gráfico. Assim, rodamos o modelo 1 que os autores apresentam na tabela 2 no artigo.
+Outra forma de analisar os outliers é através de uma análise gráfica dos resíduos pelas observações influentes. Aqui, é necessário primeiro rodar o modelo para depois plotar o gráfico.
 
-```{r, fig.align='center', fig.height=3, fig.width=6}
+```{r, fig.align='center', fig.height=4, fig.width=6, out.height="40%", out.width="60%"}
 # Modelo 1 (com os outliers)
 full_raw_data <- lm(
   postenp ~ fundparity4
@@ -111,16 +119,16 @@ plot(full_raw_data, which = 5)
 
 No gráfico acima, valores considerados influentes deveriam aparecer depois da linha tracejada. Como é possível perceber, não existem valores influentes.
 
-### 3. Análise dos resíduos padronizados
+**3. Análise dos resíduos padronizados**
 
 ```{r}
 outliers <- which(rstandard(full_raw_data) > 2 | rstandard(full_raw_data) < -2)
 paises_outliers <- raw_data[outliers, ] |> pull(cnty)
 ```
 
-Também neste tipo de análise é primeiro rodar o modelo. Novamento utilizamos o modelo 1 da tabela2. Em uma análise dos resíduos padronizados, são considerados valores outliers aqueles cujos resíduos padronizados forem maior que 2 ou menor que -2. Nesta análise, os países considerados outliers foram `r paste(paises_outliers, sep = ", ")`.
+Em uma análise dos resíduos padronizados, são considerados valores outliers aqueles cujos resíduos padronizados forem maior que 2 ou menor que -2. Nesta análise, os países considerados outliers foram `r paste(paises_outliers, sep = ", ")`.
 
-## Modelos apresentados no artigo
+**Modelos apresentados no artigo**
 
 Como foi dito acima, os dois modelos que os autores utilizaram na análise foram gerados a partir de uma base sem aqueles três países considerados "outliers", os quais apareceram na nossa análise de outliers sob métodos diferentes. A despeito disso, abaixo apresentamos os dois modelos apresentados pelos autores no paper, excluindo a Libéria, a Albânia e o Brasil.
 
@@ -157,7 +165,7 @@ post1974 <- lm(
 
 # Tabela com os dois modelos
 stargazer::stargazer(full, post1974,
-  type = "text",
+  type = "latex",
   style = "ajps",
   title = "Modelos apresentados na tabela 2",
   single.row = TRUE,
@@ -170,9 +178,9 @@ stargazer::stargazer(full, post1974,
 
 Os resultados da regressão estão de acordo com os resultados apresentados no artigo. A única diferença reside no fato de que os coeficientes apresentados nos artigos estão arredondados em duas casas decimais, enquanto aqui em três casas decimais. Mas são resultados essencialmente iguais.
 
-## Modelos mencionados no artigo
+**Modelos mencionados no artigo**
 
-### 1. Contribuição dos componentes da *fund parity* (nota 42)
+**1. Contribuição dos componentes da *fund parity* (nota 42)**
 
 Na 42º nota de rodapé os autores buscam verificar se alguma das quatros variáveis que compõem o fund parity trabalha contra as outras três. Mas, como argumentam, de fato todas estão positivmaente associadas à paridade de fundos, embora somente a limitação da quantidade de doação permitida seja estatisticamente significativa.
 
@@ -359,7 +367,7 @@ stargazer::stargazer(reg1, reg2, reg3, reg4,
 )
 ```
 
-### 2. Diferenças entre as regras e a prática (nota 43)
+**2. Diferenças entre as regras e a prática (nota 43)**
 
 Na 43º nota de rodapé os autores chamam a atenção para as possíveis diferenças que podem existir entre as regras intitucionais e os efeitos dessas regras nas estratégias partidárias.
 
@@ -395,7 +403,7 @@ stargazer::stargazer(rules.practice,
 
 Os autores argumentam que se a interação entre a paridade de fundos e a qualidade do Estado de direito fosse estatisticamente significativa, o impacto da paridade de fundos sobre a competição partidária tenderia a diminuir com menores nível de Estado de direito. De fato, como apresentam na nota de rodapé, essa relação não é estatisticamente significativa, mas caberia explicitar que ela não é significativa ao nível de 95% de confiança.
 
-### 3. Controlando pelo limiar eleitoral legal
+**3. Controlando pelo limiar eleitoral legal**
 
 Neste modelo, os autores incluem a variável *thresh*, que mede o limiar eleitoral legal. Em conformidade com o que afirmam, de fato a inclusão dessa variável não afeta a *fund parity*, que continua estatistcamente significante.
 
@@ -424,14 +432,13 @@ stargazer::stargazer(threshold,
 )
 ```
 
-## Lidando com a endogeneidade
+**Lidando com a endogeneidade**
 
 Os autores sugerem como direção causal que as regras de financiamento de campanham impactam a competição partidária, medida pelo número efetivo de partidos. Ou seja, argumentam que:
-
 $$
 Fund\ parity \to ENP
-$$ No entanto, para demonstrar que a direção é realmente essa e não o contrário, isto é, $ENP \to Fund\ parity$ precisam rodar análises adicionais.
-
+$$ 
+No entanto, para demonstrar que a direção é realmente essa e não o contrário, isto é, $ENP \to Fund\ parity$ precisam rodar análises adicionais.
 
 1.  Repetem a análise de regressão somente com países que se tornaram democracias recentemente, porque partem do pressuposto de que as regras de financiamento de campanham foram implementadas antes do sistema partidário ou de forma exógena a ele (caso das pressões exercidas por organizazções promotoras de democracia sobre as regras que deveriam ser adotadas). Essa é a razão pela qual rodaram um modelo somente com países democratizados após 1974.
 
@@ -459,7 +466,7 @@ plot(
 abline(a = 0.82, b = -0.04, lwd = 2)
 ```
 
-```{r, fig.align='center', fig.height=4, fig.width=6, warning=FALSE}
+```{r, fig.align='center', fig.height=4, fig.width=6, out.height="40%", out.width="60%", warning=FALSE}
 raw_data |> 
   ggplot() +
   aes(x = preenp, y = fundparity4) +
@@ -467,7 +474,7 @@ raw_data |>
   geom_smooth(method="lm", se=T) +
   theme_classic() +
   labs(
-    #title = "",
+    # title = "",
     x = "Previous ENP",
     y = "Current Fund Parity Value"
   )
