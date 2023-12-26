@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.12.10)  24 DEC 2023 02:53
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.12.10)  24 DEC 2023 15:03
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -189,8 +189,6 @@ Package graphics Info: Driver file: pdftex.def on input line 107.
 )
 \Gin@req@height=\dimen158
 \Gin@req@width=\dimen159
-) (c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/setspace/setspace.sty
-Package: setspace 2022/12/04 v6.7b set line spacing
 ) (c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty
 Package: hyperref 2023-11-26 v7.01g Hypertext links for LaTeX
 (c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/infwarerr/infwarerr.sty
@@ -300,7 +298,7 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 28
 )
 \Hy@SectionHShift=\skip53
 )
-LaTeX Font Info:    Trying to load font information for T1+lmr on input line 73.
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 71.
 (c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) (c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
@@ -320,27 +318,30 @@ LaTeX Warning: Label `' multiply defined.
 
 LaTeX Warning: Label `' multiply defined.
 
+
+LaTeX Warning: Label `' multiply defined.
+
 )
 \openout1 = `trab-final2.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 73.
-LaTeX Font Info:    ... okay on input line 73.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 73.
-LaTeX Font Info:    ... okay on input line 73.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 73.
-LaTeX Font Info:    ... okay on input line 73.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 73.
-LaTeX Font Info:    ... okay on input line 73.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 73.
-LaTeX Font Info:    ... okay on input line 73.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 73.
-LaTeX Font Info:    ... okay on input line 73.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 73.
-LaTeX Font Info:    ... okay on input line 73.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 73.
-LaTeX Font Info:    ... okay on input line 73.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 73.
-LaTeX Font Info:    ... okay on input line 73.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
 (c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
@@ -381,59 +382,84 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring OFF on input line 73.
+Package hyperref Info: Link coloring OFF on input line 71.
 (./trab-final2.out) (./trab-final2.out)
 \@outlinefile=\write3
 \openout3 = `trab-final2.out'.
 
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 110.
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 108.
 (c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [1
-
-{c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}]
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 129.
+)
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 127.
 (c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 129.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 127.
 (c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 129.
+LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 127.
 (c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 129.
+LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 127.
 (c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 129.
+(Font)              <12> on input line 127.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 129.
+(Font)              <8> on input line 127.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 129.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 129.
+(Font)              <6> on input line 127.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 127.
 (c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 129.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 127.
 (c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) [2{c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}]
-<trab-final2_files/figure-latex/unnamed-chunk-1-1.pdf, id=73, 469.755pt x 325.215pt>
+) [1
+
+{c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}]
+<trab-final2_files/figure-latex/unnamed-chunk-1-1.pdf, id=72, 216.81pt x 289.08pt>
 File: trab-final2_files/figure-latex/unnamed-chunk-1-1.pdf Graphic file (type pdf)
 <use trab-final2_files/figure-latex/unnamed-chunk-1-1.pdf>
-Package pdftex.def Info: trab-final2_files/figure-latex/unnamed-chunk-1-1.pdf  used on input line 188.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[3]
-<trab-final2_files/figure-latex/unnamed-chunk-2-1.pdf, id=80, 433.62pt x 325.215pt>
+Package pdftex.def Info: trab-final2_files/figure-latex/unnamed-chunk-1-1.pdf  used on input line 186.
+(pdftex.def)             Requested size: 216.81938pt x 289.09251pt.
+[2]
+<trab-final2_files/figure-latex/unnamed-chunk-2-1.pdf, id=80, 433.62pt x 216.81pt>
 File: trab-final2_files/figure-latex/unnamed-chunk-2-1.pdf Graphic file (type pdf)
 <use trab-final2_files/figure-latex/unnamed-chunk-2-1.pdf>
-Package pdftex.def Info: trab-final2_files/figure-latex/unnamed-chunk-2-1.pdf  used on input line 199.
-(pdftex.def)             Requested size: 433.63878pt x 325.22908pt.
-[4 <./trab-final2_files/figure-latex/unnamed-chunk-1-1.pdf>] [5 <./trab-final2_files/figure-latex/unnamed-chunk-2-1.pdf>] [6] [7] [8] [9] [10] [11] (./trab-final2.aux)
+Package pdftex.def Info: trab-final2_files/figure-latex/unnamed-chunk-2-1.pdf  used on input line 197.
+(pdftex.def)             Requested size: 433.63878pt x 216.81938pt.
+[3 <./trab-final2_files/figure-latex/unnamed-chunk-1-1.pdf> <./trab-final2_files/figure-latex/unnamed-chunk-2-1.pdf>] [4]
+Overfull \hbox (13.00853pt too wide) in paragraph at lines 302--324
+ [][] 
+ []
+
+
+Overfull \hbox (13.00853pt too wide) in paragraph at lines 332--354
+ [][] 
+ []
+
+[5] [6] [7]
+<trab-final2_files/figure-latex/unnamed-chunk-10-1.pdf, id=129, 433.62pt x 289.08pt>
+File: trab-final2_files/figure-latex/unnamed-chunk-10-1.pdf Graphic file (type pdf)
+<use trab-final2_files/figure-latex/unnamed-chunk-10-1.pdf>
+Package pdftex.def Info: trab-final2_files/figure-latex/unnamed-chunk-10-1.pdf  used on input line 468.
+(pdftex.def)             Requested size: 433.63878pt x 289.09251pt.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 470.
+(c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
+File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+<trab-final2_files/figure-latex/unnamed-chunk-11-1.pdf, id=130, 433.62pt x 289.08pt>
+File: trab-final2_files/figure-latex/unnamed-chunk-11-1.pdf Graphic file (type pdf)
+<use trab-final2_files/figure-latex/unnamed-chunk-11-1.pdf>
+Package pdftex.def Info: trab-final2_files/figure-latex/unnamed-chunk-11-1.pdf  used on input line 474.
+(pdftex.def)             Requested size: 433.63878pt x 289.09251pt.
+[8 <./trab-final2_files/figure-latex/unnamed-chunk-10-1.pdf>] [9 <./trab-final2_files/figure-latex/unnamed-chunk-11-1.pdf>] (./trab-final2.aux)
  ***********
 LaTeX2e <2023-11-01>
 L3 programming layer <2023-12-08>
@@ -442,21 +468,21 @@ L3 programming layer <2023-12-08>
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `trab-final2.out' has not changed.
-(rerunfilecheck)             Checksum: 959B34314A22C90B95FADB06C4F9A815;2518.
+(rerunfilecheck)             Checksum: 7BC5334BD6B4A2DED4250862CB5EE139;2923.
  ) 
 Here is how much of TeX's memory you used:
- 10786 strings out of 476131
- 169760 string characters out of 5792525
- 1948473 words of memory out of 5000000
- 32637 multiletter control sequences out of 15000+600000
- 592293 words of font info for 61 fonts, out of 8000000 for 9000
+ 10812 strings out of 476131
+ 170966 string characters out of 5792525
+ 1947473 words of memory out of 5000000
+ 32661 multiletter control sequences out of 15000+600000
+ 592611 words of font info for 62 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  75i,10n,79p,420b,513s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbxi10.pfb><c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi12.pfb><c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi8.pfb><c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri12.pfb><c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy8.pfb>
-Output written on trab-final2.pdf (11 pages, 177199 bytes).
+<c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbxi10.pfb><c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi12.pfb><c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi8.pfb><c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri12.pfb><c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy8.pfb><c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt12.pfb>
+Output written on trab-final2.pdf (9 pages, 216620 bytes).
 PDF statistics:
- 200 PDF objects out of 1000 (max. 8388607)
- 161 compressed objects within 2 object streams
- 41 named destinations out of 1000 (max. 500000)
- 107 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 220 PDF objects out of 1000 (max. 8388607)
+ 177 compressed objects within 2 object streams
+ 43 named destinations out of 1000 (max. 500000)
+ 125 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -1,9 +1,6 @@
 ---
 output: pdf_document
 fontsize: 12pt
-header-includes:
-  - \usepackage{setspace}
-  - \doublespacing
 ---
 
 ```{r setup, include=FALSE}
@@ -17,6 +14,8 @@ library(haven)
 library(easystats)
 library(foreign)
 library(arm)
+library(lmtest)
+library(sandwich)
 ```
 
 **Universidade de São Paulo**\
@@ -72,12 +71,12 @@ raw_data <- read_dta("data/potter_tavits_data.dta")
 
 ### 1. Boxplot
 
-Os dois valores outliers do boxplot são `r round((boxplot(raw_data$postenp, plot = FALSE)$out[1]),1)` e `r round((boxplot(raw_data$postenp, plot = FALSE)$out[2]),1)`, os quais correspondem, respectivamente, a Albania e a Libéria. Lembrando que, no R, o valor default para multiplicação do intervalo interquartil (IQR) é 1.5. Em outros softwares o padrão pode ser outro.
+Os dois valores outliers do boxplot são `r round((boxplot(raw_data$postenp, plot = FALSE)$out[1]),1)` e `r round((boxplot(raw_data$postenp, plot = FALSE)$out[2]),1)`, os quais correspondem, respectivamente, a Albania (2003) e a Libéria (2012). Lembrando que, no R, o valor default para multiplicação do intervalo interquartil (IQR) é 1.5. Em outros softwares o padrão pode ser outro.
 
-```{r message=FALSE, warning=FALSE}
+```{r message=FALSE, warning=FALSE, fig.align='center', fig.width=3, fig.height=4}
 raw_data |>
   ggplot() +
-  aes(y = postenp, x = 1) +
+  aes(y = postenp) +
   geom_boxplot(fill = "skyblue", coef = 1.50) +
   stat_boxplot(geom = "errorbar", width = 0.5) +
   theme_classic() +
@@ -94,7 +93,7 @@ raw_data |>
 
 Outra forma de analisar os outliers é através de uma análise gráfica dos resíduos pelas observações influentes. Aqui, é necessário primeiro rodar o modelo para depois plotar o gráfico. Assim, rodamos o modelo 1 que os autores apresentam na tabela 2 no artigo.
 
-```{r, fig.align='center', fig.width=6}
+```{r, fig.align='center', fig.height=3, fig.width=6}
 # Modelo 1 (com os outliers)
 full_raw_data <- lm(
   postenp ~ fundparity4
@@ -119,7 +118,7 @@ outliers <- which(rstandard(full_raw_data) > 2 | rstandard(full_raw_data) < -2)
 paises_outliers <- raw_data[outliers, ] |> pull(cnty)
 ```
 
-Também é neste tipo de análise é primeiro rodar o modelo. Novamento utilizamos o modelo 1 da tabela2. Em uma análise dos resíduos padronizados, são considerados valores outliers aqueles cujos resíduos padronizados forem maior que 2 ou menor que -2. Nesta análise, os países considerados outliers foram `r paste(paises_outliers, sep = ", ")`.
+Também neste tipo de análise é primeiro rodar o modelo. Novamento utilizamos o modelo 1 da tabela2. Em uma análise dos resíduos padronizados, são considerados valores outliers aqueles cujos resíduos padronizados forem maior que 2 ou menor que -2. Nesta análise, os países considerados outliers foram `r paste(paises_outliers, sep = ", ")`.
 
 ## Modelos apresentados no artigo
 
@@ -158,10 +157,10 @@ post1974 <- lm(
 
 # Tabela com os dois modelos
 stargazer::stargazer(full, post1974,
-  type = "latex",
+  type = "text",
   style = "ajps",
   title = "Modelos apresentados na tabela 2",
-  single.row = FALSE,
+  single.row = TRUE,
   keep.stat = c("n", "rsq"),
   dep.var.labels = "Competição partidária",
   header = FALSE,
@@ -196,7 +195,7 @@ stargazer::stargazer(components,
   type = "latex",
   style = "ajps",
   title = "Modelo da nota de rodapé 42",
-  single.row = FALSE,
+  single.row = TRUE,
   keep.stat = c("n", "rsq"),
   dep.var.labels = "Competição partidária",
   header = FALSE,
@@ -274,7 +273,7 @@ stargazer::stargazer(reg1, reg2, reg3, reg4,
   type = "latex",
   style = "ajps",
   title = "Modelo da nota de rodapé 42",
-  single.row = FALSE,
+  single.row = TRUE,
   keep.stat = c("n", "rsq"),
   dep.var.labels = "Competição partidária",
   header = FALSE,
@@ -352,15 +351,13 @@ stargazer::stargazer(reg1, reg2, reg3, reg4,
   type = "latex",
   style = "ajps",
   title = "Modelo da nota de rodapé 42",
-  single.row = FALSE,
+  single.row = TRUE,
   keep.stat = c("n", "rsq"),
   dep.var.labels = "Competição partidária",
   header = FALSE,
   column.labels = c("-eligmedia", "-donorlimit", "-partyspend", "-directelig")
 )
 ```
-
-------------------------------------------------------------------------
 
 ### 2. Diferenças entre as regras e a prática (nota 43)
 
@@ -388,7 +385,7 @@ stargazer::stargazer(rules.practice,
   type = "latex",
   style = "ajps",
   title = "Modelo da nota de rodapé 43",
-  single.row = FALSE,
+  single.row = TRUE,
   keep.stat = c("n", "rsq"),
   dep.var.labels = "Competição partidária",
   header = FALSE,
@@ -398,4 +395,81 @@ stargazer::stargazer(rules.practice,
 
 Os autores argumentam que se a interação entre a paridade de fundos e a qualidade do Estado de direito fosse estatisticamente significativa, o impacto da paridade de fundos sobre a competição partidária tenderia a diminuir com menores nível de Estado de direito. De fato, como apresentam na nota de rodapé, essa relação não é estatisticamente significativa, mas caberia explicitar que ela não é significativa ao nível de 95% de confiança.
 
-### 3.
+### 3. Controlando pelo limiar eleitoral legal
+
+Neste modelo, os autores incluem a variável *thresh*, que mede o limiar eleitoral legal. Em conformidade com o que afirmam, de fato a inclusão dessa variável não afeta a *fund parity*, que continua estatistcamente significante.
+
+```{r, results='asis'}
+threshold <- lm(
+  postenp ~ fundparity4
+    + thresh
+    + demyears
+    + fed
+    + pres
+    + log(avemag)
+    + fract
+    + log(avemag):fract,
+  data = campaigns
+)
+
+stargazer::stargazer(threshold,
+  type = "latex",
+  style = "ajps",
+  title = "Modelo da nota de rodapé 54",
+  single.row = TRUE,
+  keep.stat = c("n", "rsq"),
+  dep.var.labels = "Competição partidária",
+  header = FALSE,
+  column.labels = "Model 1"
+)
+```
+
+## Lidando com a endogeneidade
+
+Os autores sugerem como direção causal que as regras de financiamento de campanham impactam a competição partidária, medida pelo número efetivo de partidos. Ou seja, argumentam que:
+
+$$
+Fund\ parity \to ENP
+$$ No entanto, para demonstrar que a direção é realmente essa e não o contrário, isto é, $ENP \to Fund\ parity$ precisam rodar análises adicionais.
+
+
+1.  Repetem a análise de regressão somente com países que se tornaram democracias recentemente, porque partem do pressuposto de que as regras de financiamento de campanham foram implementadas antes do sistema partidário ou de forma exógena a ele (caso das pressões exercidas por organizazções promotoras de democracia sobre as regras que deveriam ser adotadas). Essa é a razão pela qual rodaram um modelo somente com países democratizados após 1974.
+
+Relação entre o NEP e a PARIDADE
+Plotam essas duas varaiveis
+Estimam uma regressao
+
+```{r, fig.align='center', fig.height=4, fig.width=6, warning=FALSE}
+# plot(
+#   campaigns$fundparity4
+#   ~ campaigns$preenp,
+#   pch = 20, col = "grey20", cex = 1.5,
+#   xlab = "Previous ENP",
+#   ylab = "Current Fund Parity Value"
+# )
+# abline(a = 0.82, b = -0.04, lwd = 2)
+
+plot(
+  raw_data$fundparity4
+  ~ raw_data$preenp,
+  pch = 20, col = "grey20", cex = 1.5,
+  xlab = "Previous ENP",
+  ylab = "Current Fund Parity Value"
+)
+abline(a = 0.82, b = -0.04, lwd = 2)
+```
+
+```{r, fig.align='center', fig.height=4, fig.width=6, warning=FALSE}
+raw_data |> 
+  ggplot() +
+  aes(x = preenp, y = fundparity4) +
+  geom_point() +
+  geom_smooth(method="lm", se=T) +
+  theme_classic() +
+  labs(
+    #title = "",
+    x = "Previous ENP",
+    y = "Current Fund Parity Value"
+  )
+```
+OBS: no codigo fornecido, eles fazem a analise usando campaigns, mas o grafico que eles apresentam no paper usa raw_data

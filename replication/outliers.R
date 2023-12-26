@@ -111,7 +111,7 @@ raw_data |> filter(postenp > 10) |> dplyr::select(cnty, postenp)
 
 
 
-
+raw_data |> dplyr::filter(postenp > 10) |> dplyr::select(cnty, year, postenp)
 
 
 

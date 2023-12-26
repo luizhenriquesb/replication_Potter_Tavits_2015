@@ -135,6 +135,9 @@ display(rules.practice)
 # model to ensure that including legal threshold (which eliminates a large number 
 # of our observations due to data availability) does not undercut our results 
 # (this model is mentioned in footnote 56) 
+
+# OBS: foi mencionado na nota 54
+
 threshold<-lm(postenp ~ fundparity4
               + thresh
               + demyears
