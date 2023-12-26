@@ -81,7 +81,7 @@ Analisamos os outliers através de três maneiras: 1) boxplot da variável *post
 
 Os dois valores outliers do boxplot são `r round((boxplot(raw_data$postenp, plot = FALSE)$out[1]),1)` e `r round((boxplot(raw_data$postenp, plot = FALSE)$out[2]),1)`, os quais correspondem, respectivamente, a Albania (2003) e a Libéria (2012). Lembrando que, no R, o valor default para multiplicação do intervalo interquartil (IQR) é 1.5. Em outros softwares o padrão pode ser outro.
 
-```{r message=FALSE, warning=FALSE, fig.align='center', fig.width=3, fig.height=4, out.width="30%", out.height="40%"}
+```{r boxplot, message=FALSE, warning=FALSE, fig.align='center', fig.width=3, fig.height=4, out.width="30%", out.height="40%"}
 raw_data |>
   ggplot() +
   aes(y = postenp) +
@@ -101,7 +101,7 @@ raw_data |>
 
 Outra forma de analisar os outliers é através de uma análise gráfica dos resíduos pelas observações influentes. Aqui, é necessário primeiro rodar o modelo para depois plotar o gráfico.
 
-```{r, fig.align='center', fig.height=4, fig.width=6, out.height="40%", out.width="60%"}
+```{r obs influentes, fig.align='center', fig.height=4, fig.width=6, out.height="40%", out.width="60%"}
 # Modelo 1 (com os outliers)
 full_raw_data <- lm(
   postenp ~ fundparity4
@@ -121,7 +121,7 @@ No gráfico acima, valores considerados influentes deveriam aparecer depois da l
 
 **3. Análise dos resíduos padronizados**
 
-```{r}
+```{r residuos padronizados}
 outliers <- which(rstandard(full_raw_data) > 2 | rstandard(full_raw_data) < -2)
 paises_outliers <- raw_data[outliers, ] |> pull(cnty)
 ```
@@ -132,7 +132,7 @@ Em uma análise dos resíduos padronizados, são considerados valores outliers a
 
 Como foi dito acima, os dois modelos que os autores utilizaram na análise foram gerados a partir de uma base sem aqueles três países considerados "outliers", os quais apareceram na nossa análise de outliers sob métodos diferentes. A despeito disso, abaixo apresentamos os dois modelos apresentados pelos autores no paper, excluindo a Libéria, a Albânia e o Brasil.
 
-```{r, results='asis'}
+```{r modelos, results='asis'}
 # Dados sem os outliers
 campaigns <- subset(raw_data, postenp < 9.2)
 
@@ -184,7 +184,7 @@ Os resultados da regressão estão de acordo com os resultados apresentados no a
 
 Na 42º nota de rodapé os autores buscam verificar se alguma das quatros variáveis que compõem o fund parity trabalha contra as outras três. Mas, como argumentam, de fato todas estão positivmaente associadas à paridade de fundos, embora somente a limitação da quantidade de doação permitida seja estatisticamente significativa.
 
-```{r, results='asis'}
+```{r nota 42, results='asis'}
 components <- lm(
   postenp ~ directelig
     + partyspend
@@ -202,7 +202,7 @@ components <- lm(
 stargazer::stargazer(components,
   type = "latex",
   style = "ajps",
-  title = "Modelo da nota de rodapé 42",
+  title = "Modelo da nota de rodapé 42 (1)",
   single.row = TRUE,
   keep.stat = c("n", "rsq"),
   dep.var.labels = "Competição partidária",
@@ -213,7 +213,7 @@ stargazer::stargazer(components,
 
 Os autores também afirmam que quando cada indicador da paridade de fundos é estimado individualmente, novamente somente coeficientes positivos são observados.
 
-```{r, results='asis'}
+```{r nota 42.1, results='asis'}
 # Modelo só com directelig
 reg1 <- lm(
   postenp ~ directelig
@@ -280,7 +280,7 @@ reg4 <- lm(
 stargazer::stargazer(reg1, reg2, reg3, reg4,
   type = "latex",
   style = "ajps",
-  title = "Modelo da nota de rodapé 42",
+  title = "Modelo da nota de rodapé 42 (2)",
   single.row = TRUE,
   keep.stat = c("n", "rsq"),
   dep.var.labels = "Competição partidária",
@@ -291,7 +291,7 @@ stargazer::stargazer(reg1, reg2, reg3, reg4,
 
 Também afirmam que quando os indicadores são apresentados de 3 (três) em 3 (três), novamente temos coeficientes positivos.
 
-```{r, results='asis'}
+```{r nota 42.2, results='asis'}
 # Modelo sem eligmedia
 reg1 <- lm(
   postenp ~ directelig
@@ -358,12 +358,13 @@ reg4 <- lm(
 stargazer::stargazer(reg1, reg2, reg3, reg4,
   type = "latex",
   style = "ajps",
-  title = "Modelo da nota de rodapé 42",
+  title = "Modelo da nota de rodapé 42 (3)",
   single.row = TRUE,
   keep.stat = c("n", "rsq"),
   dep.var.labels = "Competição partidária",
   header = FALSE,
-  column.labels = c("-eligmedia", "-donorlimit", "-partyspend", "-directelig")
+  column.labels = c("-eligmedia", "-donorlimit", "-partyspend", "-directelig"),
+  label = "tab:nota422"
 )
 ```
 
@@ -375,7 +376,7 @@ O debate surge em razão de uma possível diminuição do efeito preditor das le
 
 Assim, os autores interagiram a variável *fundparity4* com a variável *rulelaw* (que mede o nível de aplicação das leis).
 
-```{r, results='asis'}
+```{r nota 43, results='asis'}
 rules.practice <- lm(
   postenp ~ fundparity4
     + rulelaw
@@ -397,17 +398,18 @@ stargazer::stargazer(rules.practice,
   keep.stat = c("n", "rsq"),
   dep.var.labels = "Competição partidária",
   header = FALSE,
-  column.labels = "Model 1"
+  column.labels = "Model 1",
+  label = "tab:nota43"
 )
 ```
 
 Os autores argumentam que se a interação entre a paridade de fundos e a qualidade do Estado de direito fosse estatisticamente significativa, o impacto da paridade de fundos sobre a competição partidária tenderia a diminuir com menores nível de Estado de direito. De fato, como apresentam na nota de rodapé, essa relação não é estatisticamente significativa, mas caberia explicitar que ela não é significativa ao nível de 95% de confiança.
 
-**3. Controlando pelo limiar eleitoral legal**
+**3. Controlando pelo limiar eleitoral legal (nota 54)**
 
 Neste modelo, os autores incluem a variável *thresh*, que mede o limiar eleitoral legal. Em conformidade com o que afirmam, de fato a inclusão dessa variável não afeta a *fund parity*, que continua estatistcamente significante.
 
-```{r, results='asis'}
+```{r nota 54, results='asis'}
 threshold <- lm(
   postenp ~ fundparity4
     + thresh
@@ -428,7 +430,8 @@ stargazer::stargazer(threshold,
   keep.stat = c("n", "rsq"),
   dep.var.labels = "Competição partidária",
   header = FALSE,
-  column.labels = "Model 1"
+  column.labels = "Model 1",
+  label = "tab:nota53"
 )
 ```
 
@@ -446,27 +449,7 @@ Relação entre o NEP e a PARIDADE
 Plotam essas duas varaiveis
 Estimam uma regressao
 
-```{r, fig.align='center', fig.height=4, fig.width=6, warning=FALSE}
-# plot(
-#   campaigns$fundparity4
-#   ~ campaigns$preenp,
-#   pch = 20, col = "grey20", cex = 1.5,
-#   xlab = "Previous ENP",
-#   ylab = "Current Fund Parity Value"
-# )
-# abline(a = 0.82, b = -0.04, lwd = 2)
-
-plot(
-  raw_data$fundparity4
-  ~ raw_data$preenp,
-  pch = 20, col = "grey20", cex = 1.5,
-  xlab = "Previous ENP",
-  ylab = "Current Fund Parity Value"
-)
-abline(a = 0.82, b = -0.04, lwd = 2)
-```
-
-```{r, fig.align='center', fig.height=4, fig.width=6, out.height="40%", out.width="60%", warning=FALSE}
+```{r endogeneidade, fig.align='center', fig.height=4, fig.width=6, out.height="40%", out.width="60%", warning=FALSE}
 raw_data |> 
   ggplot() +
   aes(x = preenp, y = fundparity4) +

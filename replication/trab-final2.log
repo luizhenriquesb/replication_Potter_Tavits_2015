@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.12.10)  25 DEC 2023 23:40
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.12.10)  26 DEC 2023 00:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -312,15 +312,6 @@ LaTeX Warning: Label `' multiply defined.
 
 LaTeX Warning: Label `' multiply defined.
 
-
-LaTeX Warning: Label `' multiply defined.
-
-
-LaTeX Warning: Label `' multiply defined.
-
-
-LaTeX Warning: Label `' multiply defined.
-
 )
 \openout1 = `trab-final2.aux'.
 
@@ -423,18 +414,18 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
 {c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}]
-<trab-final2_files/figure-latex/unnamed-chunk-1-1.pdf, id=18, 216.81pt x 289.08pt>
-File: trab-final2_files/figure-latex/unnamed-chunk-1-1.pdf Graphic file (type pdf)
-<use trab-final2_files/figure-latex/unnamed-chunk-1-1.pdf>
-Package pdftex.def Info: trab-final2_files/figure-latex/unnamed-chunk-1-1.pdf  used on input line 193.
+<trab-final2_files/figure-latex/boxplot-1.pdf, id=18, 216.81pt x 289.08pt>
+File: trab-final2_files/figure-latex/boxplot-1.pdf Graphic file (type pdf)
+<use trab-final2_files/figure-latex/boxplot-1.pdf>
+Package pdftex.def Info: trab-final2_files/figure-latex/boxplot-1.pdf  used on input line 193.
 (pdftex.def)             Requested size: 140.93474pt x 187.913pt.
 [2]
-<trab-final2_files/figure-latex/unnamed-chunk-2-1.pdf, id=23, 433.62pt x 289.08pt>
-File: trab-final2_files/figure-latex/unnamed-chunk-2-1.pdf Graphic file (type pdf)
-<use trab-final2_files/figure-latex/unnamed-chunk-2-1.pdf>
-Package pdftex.def Info: trab-final2_files/figure-latex/unnamed-chunk-2-1.pdf  used on input line 201.
+<trab-final2_files/figure-latex/obs influentes-1.pdf, id=23, 433.62pt x 289.08pt>
+File: trab-final2_files/figure-latex/obs influentes-1.pdf Graphic file (type pdf)
+<use trab-final2_files/figure-latex/obs influentes-1.pdf>
+Package pdftex.def Info: trab-final2_files/figure-latex/obs influentes-1.pdf  used on input line 201.
 (pdftex.def)             Requested size: 281.8695pt x 187.913pt.
-[3 <./trab-final2_files/figure-latex/unnamed-chunk-1-1.pdf> <./trab-final2_files/figure-latex/unnamed-chunk-2-1.pdf>]
+[3 <./trab-final2_files/figure-latex/boxplot-1.pdf> <./trab-final2_files/figure-latex/obs influentes-1.pdf>]
 Overfull \hbox (13.00853pt too wide) in paragraph at lines 296--318
  [][] 
  []
@@ -445,22 +436,16 @@ Overfull \hbox (13.00853pt too wide) in paragraph at lines 326--348
  []
 
 [4] [5] [6]
-<trab-final2_files/figure-latex/unnamed-chunk-10-1.pdf, id=58, 433.62pt x 289.08pt>
-File: trab-final2_files/figure-latex/unnamed-chunk-10-1.pdf Graphic file (type pdf)
-<use trab-final2_files/figure-latex/unnamed-chunk-10-1.pdf>
-Package pdftex.def Info: trab-final2_files/figure-latex/unnamed-chunk-10-1.pdf  used on input line 456.
-(pdftex.def)             Requested size: 433.63878pt x 289.09251pt.
-[7]
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 458.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 454.
 (c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-<trab-final2_files/figure-latex/unnamed-chunk-11-1.pdf, id=66, 433.62pt x 289.08pt>
-File: trab-final2_files/figure-latex/unnamed-chunk-11-1.pdf Graphic file (type pdf)
-<use trab-final2_files/figure-latex/unnamed-chunk-11-1.pdf>
-Package pdftex.def Info: trab-final2_files/figure-latex/unnamed-chunk-11-1.pdf  used on input line 462.
+) [7]
+<trab-final2_files/figure-latex/endogeneidade-1.pdf, id=65, 433.62pt x 289.08pt>
+File: trab-final2_files/figure-latex/endogeneidade-1.pdf Graphic file (type pdf)
+<use trab-final2_files/figure-latex/endogeneidade-1.pdf>
+Package pdftex.def Info: trab-final2_files/figure-latex/endogeneidade-1.pdf  used on input line 458.
 (pdftex.def)             Requested size: 281.8695pt x 187.913pt.
-[8 <./trab-final2_files/figure-latex/unnamed-chunk-10-1.pdf> <./trab-final2_files/figure-latex/unnamed-chunk-11-1.pdf>] (./trab-final2.aux)
+[8 <./trab-final2_files/figure-latex/endogeneidade-1.pdf>] (./trab-final2.aux)
  ***********
 LaTeX2e <2023-11-01>
 L3 programming layer <2023-12-08>
@@ -472,18 +457,18 @@ Package rerunfilecheck Info: File `trab-final2.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 10756 strings out of 476131
- 169721 string characters out of 5792525
+ 10750 strings out of 476131
+ 169097 string characters out of 5792525
  1948473 words of memory out of 5000000
- 32632 multiletter control sequences out of 15000+600000
+ 32626 multiletter control sequences out of 15000+600000
  586614 words of font info for 60 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 75i,10n,79p,316b,511s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,10n,79p,316b,588s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbxi10.pfb><c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi12.pfb><c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi8.pfb><c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri12.pfb><c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy8.pfb><c:/Users/Luiz Henrique/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt12.pfb>
-Output written on trab-final2.pdf (8 pages, 215069 bytes).
+Output written on trab-final2.pdf (8 pages, 208694 bytes).
 PDF statistics:
- 143 PDF objects out of 1000 (max. 8388607)
- 101 compressed objects within 2 object streams
+ 136 PDF objects out of 1000 (max. 8388607)
+ 97 compressed objects within 1 object stream
  16 named destinations out of 1000 (max. 500000)
- 21 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 16 words of extra memory for PDF output out of 10000 (max. 10000000)
 
