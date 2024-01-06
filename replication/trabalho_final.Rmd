@@ -605,9 +605,7 @@ diagnostic_post1974[[5]]
 
 ### Modelos com erro padrão robusto
 
-O modelos de regressão linear com erro padrão robusto são uma forma de lidar com a heterocedasticidade. Esses modelos garantem estimativas consistentes mesmo em cenários de violação do pressuposto de variância constante dos erros.
-
-Abaixo, replicamos os modelos apresentados pelos autores, mas com erro padrão robusto.
+O modelos de regressão linear com erro padrão robusto são uma forma de lidar com a heterocedasticidade. Esses modelos garantem estimativas consistentes mesmo em cenários de violação do pressuposto de variância constante dos erros. Abaixo, replicamos os modelos apresentados pelos autores, mas com erro padrão robusto.
 
 ```{r, results='asis'}
 # 
@@ -687,7 +685,7 @@ full_post1974_our_outliers <- lm(
 # Tabela com os dois modelos
 stargazer::stargazer(full_raw_data, full_our_outliers, full_post1974_our_outliers,
   type = "latex",
-  style = "jpam",
+  style = "apsr",
   font.size = "small",
   title = "Verificando o peso dos outliers",
   single.row = TRUE,
@@ -713,7 +711,7 @@ Cabe também pontuar que ao longo do artigo não fica explicíto se o propósito
 
 ### Referências
 
-Potter, Joshua D., and Margit Tavits. 2015. "The Impact of Campaign Finance Laws on Party Competition." British Journal of Political Science 45(1): 73--95. doi: 10.1017/S0007123413000227.
+Potter, Joshua and Tavits, Margit . 2015. "The Impact of Campaign Finance Laws on Party Competition." British Journal of Political Science 45(1): 73--95. doi: 10.1017/S0007123413000227.
 
 Galdino, Manoel (2019). **Introdução à Regressão para Ciências Sociais**.
 
