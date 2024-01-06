@@ -711,10 +711,10 @@ Cabe também pontuar que ao longo do artigo não fica explicíto se o propósito
 
 ### Referências
 
-Potter, Joshua and Tavits, Margit . 2015. "The Impact of Campaign Finance Laws on Party Competition." British Journal of Political Science 45(1): 73--95. doi: 10.1017/S0007123413000227.
+**Checking model assumption - linear models**. Disponível em: <https://easystats.github.io/performance/articles/check_model.html>. Acesso em: 5 jan. 2024.
 
 Galdino, Manoel (2019). **Introdução à Regressão para Ciências Sociais**.
 
-**Checking model assumption - linear models**. Disponível em: <https://easystats.github.io/performance/articles/check_model.html>. Acesso em: 5 jan. 2024.
+Potter, Joshua and Tavits, Margit . 2015. "The Impact of Campaign Finance Laws on Party Competition." British Journal of Political Science 45(1): 73--95. doi: 10.1017/S0007123413000227.
 
 **Understanding Diagnostic Plots for Linear Regression Analysis**. Disponível em: <https://library.virginia.edu/data/articles/diagnostic-plots>. Acesso em: 5 jan. 2024.
