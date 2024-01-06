@@ -1,0 +1,722 @@
+---
+title: "Métodos Quantitativos em Ciência Política IV"
+subtitle: 'Replicação do artigo "O impacto das leis de financiamento de campanha na competição partidária" (Potter & Tavits, 2013)'
+author: "Luiz Henrique da Silva Batista (NUSP: 12687228)"
+output: pdf_document
+fontsize: 12pt
+header-includes: 
+- \usepackage{placeins}
+- \usepackage{dcolumn}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_knit$set(root.dir = here::here())
+```
+
+```{r pacotes, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(haven)
+library(easystats)
+library(foreign)
+library(arm)
+library(lmtest)
+library(sandwich)
+library(performance)
+library(qqplotr)
+```
+
+### Introdução
+
+Este trabalho é uma replicação das análises empíricas que Potter e Tavits (2013) realizaram para embasar a hipótese de que as leis de financiamento de campanha impactam a competição partidária. Os autores reconhecem que o tamanho do sistema partidário é afetado pelas regras eleitorais e pelas clivagens sociais, conforme boa parte da literatura tem mostrado. No entanto, defendem que, mesmo controlando pelas variáveis institucionais e sociológicas, o conjunto de regras que estruturam o financiamento de campanhas apresenta forte efeito preditivo na competição entre os partidos.
+
+Para mensurar a relação entre essas duas variáveis, os autores sintetizam a noção de competição partidária no *Número Efetivo de Partidos* (NEP)[^1] e os regimes de financiamento de campanhas no conceito de *fund parity*. Este conceito busca caracterizar sistemas partidários que os autores chamam de *permissivos*, nos quais muitos partidos têm boas chances de ganhar espaço na legislatura, e *restritivos*, nos quais poucos partidos têm tais chances. A métrica que desenvolveram para este conceito varia de -2 (sistema restritivo) até 4 (sistema permissivo), conforme os critérios definidos abaixo:
+
+[^1]: Desenvolvido por Laakso e Taagepera (1979) e Taagepera e Shugart (1989).
+
+-   Se há limitação na quantidade de doação permitida (1), se não há limitação (0);
+
+-   Se há limitação dos gastos de campanhas dos partidos (1), se não há limitação (0);
+
+-   Se o acesso ao espaço na mídia é baseado no desempenho anterior do partido (-1), se o acesso é distribuído equitativamente (1), se o acesso não é permitido (0);
+
+-   Se o financiamento público das campanhas é baseado no desempenho anterior do partido (-1), se o financiamento público é distribuído equitativamente (1), se não tem financiamento público (0).
+
+Assim, em síntese, o argumento dos autores é captar qual o efeito exclusivo do *fund parity*. Representando tal argumento em notação escalar, temos:
+
+$$
+NEP = \alpha + \beta_1 \cdot X_{Fund\ Parity} + \beta_2 \cdot X_2 +\ ...\ + \beta_k \cdot X_k + \epsilon
+$$
+
+### Descrição da base de dados
+
+A base de dados utilizada pelos autores contém informações sobre 124 países. Além do número efetivo de cada país, dos critérios para a construção do índice de paridade de financiamento e do próprio índice, a base armazena algumas variáveis institucionais, como a forma do estado e o sistema de governo, e sociológicas, como as diferenças etnolinguísticas existentes no país.
+
+Além disso, os dados correspondem a dois momentos no tempo: 2003 e 2012. Mas isso não vale para todos os países. Isso porque os dados foram coletados por meio de fontes variadas. O número efetivo de partidos, por exemplo, foi obtido através de Gallagher e Mitchell (2008), complementado por dados disponibilizados por Adam Carr e pela European Elections Database. Já as observações a respeito do regime de financiamento das campanhas foram obtidas por meio do Internacional IDEA, pesquisa conduzida por Austin e Tjersnstrom (2003).
+
+### Replicação dos resultados
+
+Os autores apresentam dois modelos no artigo. O primeiro com todas as democracias, exceto três casos considerados "outliers", e o segundo deles somente com países que se tornaram democracias depois de 1974, recorte temporal justificado por ser uma das maneiras de se lidar com uma suposta endogeneidade dos dados (voltaremos a isso mais à frente). Vamos fazer a replicação desses dois modelos e de outros que apresentados nas notas de rodapé. Antes disso, no entanto, vamos fazer uma análise para detectar potenciais outliers na base de dados e verificar se chegamos às mesmas conclusões dos autores.
+
+```{r raw_data}
+# Dados completos
+raw_data <- read_dta("data/potter_tavits_data.dta")
+```
+
+### Análise dos outliers
+
+Os três outliers retirados pelos autores foram Libéria (fund parity medido em 2012), Albânia (fund parity medido em 2003) e Brasil (fund parity medido em 2003). No entanto, os autores não evidenciam qual o método que utilizaram para a identificação desses casos. Embora existam diversas formas para identificar valores considerados outliers, aqui optamos por fazer essa detecção através de duas técnicas: plotamos um gráfico box-plot da variável *postenp* (variável dependente) e um gráfico que identifica valores que afetam as estimativas de um modelo de regressão.
+
+### 1. Box-plot
+
+Os dois valores outliers da variável *postenp* são `r round((boxplot(raw_data$postenp, plot = FALSE)$out[1]),1)` e `r round((boxplot(raw_data$postenp, plot = FALSE)$out[2]),1)`, os quais correspondem, respectivamente, à Albania (2003) e à Libéria (2012). O Brasil (2003), considerado como outlier pelos autores, não o foi aqui. No entanto, devemos lembrar que, no R, o valor default para multiplicação do intervalo interquartil (IQR) é 1,5. Em outros softwares, o padrão pode ser outro.
+
+```{r boxplot, message=FALSE, warning=FALSE, fig.align='center', fig.height=4, fig.width=3, out.width="30%", out.height="40%"}
+# dados apenas com os outliers (identificados pelo boxplot)
+outliers <- raw_data |>
+  group_by(cnty) |>
+  filter(postenp %in% boxplot.stats(raw_data$postenp)$out)
+
+# grando o box-plot
+raw_data |>
+  ggplot() +
+  aes(x = 1, y = postenp) +
+  geom_boxplot(fill = "skyblue", coef = 1.50) +
+  stat_boxplot(geom = "errorbar", width = 0.5) +
+  scale_y_continuous(breaks = seq(0, 15, 1)) +
+  theme_classic() +
+  labs(title = "Boxplot") +
+  theme(
+    title = element_text(face = "bold", size = 10),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank()
+  ) +
+  geom_text(
+    data = outliers, aes(label = paste0(cnty, " (", year, ")"), y = postenp),
+    vjust = -.1,
+    hjust = -.15
+  )
+```
+
+### 2. Cook's distance
+
+O método estatístico de "Cook's distance" identifica os valores influentes plotando-os depois da linha tracejada. Para fazer essa análise, é necessário, primeiro, rodar o modelo de regressão para, depois, gerar o gráfico. Assim, rodamos um modelo utilizando todos os dados. Pela análise do gráfico, nota-se a ausência de valores influentes.[^2]
+
+[^2]: Os valores considerados influentes não são, necessariamente, outliers.
+
+```{r obs influentes, fig.align='center', fig.height=4, fig.width=6, out.width="65%"}
+# Modelo (com a base completa)
+full_raw_data <- lm(
+  postenp ~ fundparity4
+    + demyears
+    + fed
+    + pres
+    + log(avemag)
+    + fract
+    + log(avemag):fract,
+  data = raw_data
+)
+
+diagnostic_full_raw_data <- plot(check_model(full_raw_data, panel = FALSE))
+
+# plota somente o gráfico de cook's distance
+diagnostic_full_raw_data[[4]]
+```
+
+### Modelos apresentados no artigo
+
+Abaixo, temos a replicação dos dois modelos apresentados pelos autores no paper, excluindo a Libéria (2012), a Albânia (2003) e o Brasil (2003), países tidos como outliers pelos autores.
+
+```{r modelos, results='asis'}
+# Dados sem os outliers (identificados pelos autores)
+campaigns <- subset(raw_data, postenp < 9.2)
+
+# Modelo 1 (all democracies)
+full <- lm(
+  postenp ~ fundparity4
+    + demyears
+    + fed
+    + pres
+    + log(avemag)
+    + fract
+    + log(avemag):fract,
+  data = campaigns
+)
+
+# Dados sem outliers e somente com democracias pós-1974
+later1974 <- subset(campaigns, demin > 1973)
+
+# Modelo 2 (1974 and later)
+post1974 <- lm(
+  postenp ~ fundparity4
+    + demyears
+    + fed
+    + pres
+    + log(avemag)
+    + fract
+    + log(avemag):fract,
+  data = later1974
+)
+
+# Tabela com os dois modelos
+stargazer::stargazer(full, post1974,
+  type = "latex",
+  style = "apsr",
+  font.size = "small",
+  title = "OLS Model Estimating the Effect of Fund Parity on ENP",
+  single.row = TRUE,
+  align = TRUE,
+  dep.var.labels.include = FALSE,
+  keep.stat = c("n", "rsq"),
+  header = FALSE,
+  notes.align = "r",
+  column.labels = c("All democracies", "1974 and later")
+)
+```
+
+\FloatBarrier
+
+Os resultados da replicação estão em conformidade com os resultados apresentados pelos autores.[^3] A única diferença reside no fato de que, aqui, os coeficientes estão arrdondados em três casas decimais. Contudo, os resultados são essencialmente iguais.
+
+[^3]: Esses modelos foram apresentados na tabela 2 do artigo.
+
+### Modelos mencionados nas notas de rodapé do artigo
+
+No artigo, alguns modelos de regressão são mencionados em notas de rodapé. A seguir, replicaremos esses modelos indicando a que nota se referem e expondo brevemente o propósito de cada um deles.
+
+\FloatBarrier
+
+### 1. Contribuição dos componentes do índice de *fund parity* (nota de rodapé 42)
+
+Nesta nota de rodapé, os autores buscam verificar se alguma das quatros variáveis que compõem o fund parity trabalha contra as outras três, ou seja, se alguma variável apresenta um efeito oposto em relação às demais.
+
+### 1.1 Algum componente trabalha contra os outros?
+
+Os autores argumentam que todos os componentes estão positivamente associados à paridade de fundos (fund parity), embora somente a limitação da quantidade de doação permitida seja estatisticamente significativa. De fato, é isso o que acontece.
+
+```{r nota 42, results='asis'}
+# modelo com cada variavel que compõe a fund parity
+components <- lm(
+  postenp ~ directelig
+    + partyspend
+    + donorlimit
+    + eligmedia
+    + demyears
+    + fed
+    + pres
+    + log(avemag)
+    + fract
+    + log(avemag):fract,
+  data = campaigns
+)
+
+stargazer::stargazer(components,
+  type = "latex",
+  style = "apsr",
+  font.size = "small",
+  title = "Modelo da nota de rodapé 42 (1)",
+  single.row = TRUE,
+  align = TRUE,
+  dep.var.labels.include = FALSE,
+  keep.stat = c("n", "rsq"),
+  header = FALSE,
+  notes.align = "r",
+  column.labels = "Model"
+)
+```
+
+\FloatBarrier
+
+### 1.2 Mesmo quando cada componente é analisado individualmente?
+
+Os autores também afirmam que, quando cada indicador da paridade de fundos é estimado individualmente, novamente somente coeficientes positivos são observados. Uma vez mais, os resultados da replicação correspondem ao que foi apresentado no artigo.
+
+```{r nota 42.1, results='asis'}
+# Modelo só com directelig
+reg1 <- lm(
+  postenp ~ directelig
+    # + partyspend
+    # + donorlimit
+    # + eligmedia
+    + demyears
+    + fed
+    + pres
+    + log(avemag)
+    + fract
+    + log(avemag):fract,
+  data = campaigns
+)
+
+# Modelo só com partyspend
+reg2 <- lm(
+  postenp ~
+    # directelig
+    +partyspend
+    # + donorlimit
+    # + eligmedia
+    + demyears
+    + fed
+    + pres
+    + log(avemag)
+    + fract
+    + log(avemag):fract,
+  data = campaigns
+)
+
+# Modelo só com donorlimit
+reg3 <- lm(
+  postenp ~
+    # directelig
+    # + partyspend
+    +donorlimit
+    # + eligmedia
+    + demyears
+    + fed
+    + pres
+    + log(avemag)
+    + fract
+    + log(avemag):fract,
+  data = campaigns
+)
+
+# Modelo só com eligmedia
+reg4 <- lm(
+  postenp ~
+    # directelig
+    # + partyspend
+    # + donorlimit
+    +eligmedia
+    + demyears
+    + fed
+    + pres
+    + log(avemag)
+    + fract
+    + log(avemag):fract,
+  data = campaigns
+)
+
+stargazer::stargazer(reg1, reg2, reg3, reg4,
+  type = "latex",
+  style = "apsr",
+  font.size = "small",
+  title = "Modelo da nota de rodapé 42 (2)",
+  single.row = TRUE,
+  # align = TRUE,
+  colnames = TRUE,
+  dep.var.labels.include = FALSE,
+  keep.stat = c("n", "rsq"),
+  header = FALSE,
+  notes.align = "r",
+  column.labels = c("directelig", "partyspend", "donorlimit", "eligmedia")
+)
+```
+
+\FloatBarrier
+
+### 1.3 E quando são analisados três componentes de cada vez?
+
+Também afirmam que quando os indicadores são apresentados de 3 (três) em 3 (três), também temos somente coeficientes positivos. De novo, a replicação segue alinhada com os resultados do artigo.
+
+```{r nota 42.2, results='asis'}
+# Modelo sem eligmedia
+reg5 <- lm(
+  postenp ~ directelig
+    + partyspend
+    + donorlimit
+    # + eligmedia
+    + demyears
+    + fed
+    + pres
+    + log(avemag)
+    + fract
+    + log(avemag):fract,
+  data = campaigns
+)
+
+# Modelo sem donorlimit
+reg6 <- lm(
+  postenp ~
+    directelig
+    + partyspend
+    # + donorlimit
+    + eligmedia
+    + demyears
+    + fed
+    + pres
+    + log(avemag)
+    + fract
+    + log(avemag):fract,
+  data = campaigns
+)
+
+# Modelo sem partyspend
+reg7 <- lm(
+  postenp ~
+    directelig
+    # + partyspend
+    + donorlimit
+    + eligmedia
+    + demyears
+    + fed
+    + pres
+    + log(avemag)
+    + fract
+    + log(avemag):fract,
+  data = campaigns
+)
+
+# Modelo sem directelig
+reg8 <- lm(
+  postenp ~
+    # directelig
+    +partyspend
+    + donorlimit
+    + eligmedia
+    + demyears
+    + fed
+    + pres
+    + log(avemag)
+    + fract
+    + log(avemag):fract,
+  data = campaigns
+)
+
+stargazer::stargazer(reg5, reg6, reg7, reg8,
+  type = "latex",
+  style = "apsr",
+  font.size = "small",
+  title = "Modelo da nota de rodapé 42 (3)",
+  single.row = TRUE,
+  # align = TRUE,
+  dep.var.labels.include = FALSE,
+  keep.stat = c("n", "rsq"),
+  header = FALSE,
+  notes.align = "r",
+  column.labels = c("-eligmedia", "-donorlimit", "-partyspend", "-directelig")
+)
+```
+
+\FloatBarrier
+
+### 2. Diferenças entre as regras e a prática (nota de rodapé 43)
+
+Na 43ª nota de rodapé, os autores chamam a atenção para as possíveis diferenças que podem existir entre as regras institucionais e os efeitos delas nas estratégias partidárias.
+
+O debate surge em razão de uma possível diminuição do efeito preditor das leis de financiamento de campanha em países com reduzido nível de aplicação dessas leis.
+
+Assim, os autores interagiram a variável *fundparity4* com a variável *rulelaw* (que mede o nível de aplicação das leis).
+
+```{r nota 43, results='asis'}
+# Modelo com rulelaw
+rules.practice <- lm(
+  postenp ~ fundparity4
+    + rulelaw
+    + fundparity4 * rulelaw
+    + demyears
+    + fed
+    + pres
+    + log(avemag)
+    + fract
+    + log(avemag):fract,
+  data = campaigns
+)
+
+stargazer::stargazer(rules.practice,
+  type = "latex",
+  style = "apsr",
+  font.size = "small",
+  title = "Modelo da nota de rodapé 43",
+  single.row = TRUE,
+  align = TRUE,
+  dep.var.labels.include = FALSE,
+  keep.stat = c("n", "rsq"),
+  header = FALSE,
+  notes.align = "r",
+  column.labels = "Model"
+)
+```
+
+\FloatBarrier
+
+O argumento é que se a interação entre a paridade de fundos e a qualidade do Estado de direito fosse estatisticamente significativa o impacto da paridade de fundos sobre a competição partidária tenderia a diminuir com menores níveis de Estado de direito. De fato, como apresentam na nota de rodapé, essa relação não é estatisticamente significativa.
+
+\FloatBarrier
+
+### 3. Controlando pelo limiar eleitoral legal (nota de rodapé 54)
+
+Neste modelo, os autores incluem a variável *thresh*, que mede o limiar eleitoral legal. Em conformidade com o que afirmam, de fato a inclusão dessa variável não afeta a *fund parity*, que continua estatisticamente significante.
+
+```{r nota 54, results='asis'}
+# modelo com limiar eleitoral legal
+threshold <- lm(
+  postenp ~ fundparity4
+    + thresh
+    + demyears
+    + fed
+    + pres
+    + log(avemag)
+    + fract
+    + log(avemag):fract,
+  data = campaigns
+)
+
+stargazer::stargazer(threshold,
+  type = "latex",
+  style = "apsr",
+  font.size = "small",
+  title = "Modelo da nota de rodapé 54",
+  single.row = TRUE,
+  align = TRUE,
+  dep.var.labels.include = FALSE,
+  keep.stat = c("n", "rsq"),
+  header = FALSE,
+  notes.align = "r",
+  column.labels = "Model"
+)
+```
+
+\FloatBarrier
+
+### Lidando com a endogeneidade
+
+Os autores sugerem como direção causal que as regras de financiamento de campanha impactam a competição partidária. Ou seja, argumentam que:
+
+$$
+Fund\ parity \to ENP
+$$
+
+No entanto, para demonstrar que a direção é realmente essa e não o contrário, isto é, $ENP \to Fund\ parity$, precisam rodar análises adicionais.[^4]
+
+[^4]: Apesar de falarem em causalidade na relação entre essas duas variáveis, cabe perguntar se as análises desenvolvidas realmente são capazes de evidenciarem uma relação de causa e efeito.
+
+Em parte, os autores já lidaram com este problema ao rodarem a regressão somente com países que se tornaram democracias recentemente, porque partem do pressuposto de que as regras de financiamento de campanha foram implementadas antes do sistema partidário ou de forma exógena a ele (caso das pressões exercidas por organizações promotoras de democracia sobre as regras que deveriam ser adotadas).
+
+Outra maneira que utilizaram para lidar com a endogeneidade foi estimar uma reta de regressão entre o NEP e o fund parity (figura 1).
+
+```{r endogeneidade, fig.align='center', fig.height=4, fig.width=6, out.width="65%", warning=FALSE, message=FALSE}
+# gerando gráfico da figura 1 (endogeneidade)
+raw_data |>
+  ggplot() +
+  aes(x = preenp, y = fundparity4) +
+  geom_point() +
+  geom_smooth(method = "lm", se = T) +
+  theme_classic() +
+  labs(
+    # title = "",
+    x = "Previous ENP",
+    y = "Current Fund Parity Value"
+  )
+```
+
+O gráfico acima reproduz a figura 1 apresentada no artigo, demonstrando que, de fato, os resultados, aqui e lá, são idênticos.
+
+### Checagem dos pressupostos
+
+Vamos agora fazer a checagem dos dois principais modelos apresentados no artigo, isto é, o modelo com todas as democracias (*all democracies*) e o somente com as democracias recentes (*post 1974*)
+
+```{r}
+diagnostic_full <- plot(check_model(full, panel = FALSE))
+diagnostic_post1974 <- plot(check_model(post1974, panel = FALSE))
+```
+
+### 1. Linearidade
+
+Um gráfico dos resíduos pelos valores ajustados, embora útil para verificar a homocedasticidade, é também utilizado para verificar se temos uma relação linear entre a variável dependente e as variáveis independentes. Para este caso, a linha verde plotada no gráfico deve ser aproximadamente horizontal.
+
+*Modelo: all democracies*
+
+Ao analisar o gráfico abaixo, podemos perceber que a linha verde é aproximadamente horizontal, mas se afasta um pouco nas extremidades. No entanto, se considerarmos o erro padrão, a linha verde está dentro do intervalo da reta horizontal em toda sua extensão.
+
+```{r, fig.align='center', fig.height=3, fig.width=6, out.width="65%"}
+diagnostic_full[[2]]
+```
+
+*Modelo: Post 1974*
+
+No caso do modelo somente com as democracias recentes, temos a mesma interpretação do modelo acima, com a exceção de que, aqui, a linha verde se afasta menos da reta horizontal nos extremos.
+
+```{r, fig.align='center', fig.height=3, fig.width=6, out.width="65%"}
+diagnostic_post1974[[2]]
+```
+
+### 2. Homocedasticidade
+
+Supor homocedasticidade significa que os resíduos variam ao longo dos valores preditos sem apresentarem qualquer padrão sistemático de variação. Aqui, os pontos devem se espalhar aleatoriamente em torno da reta.
+
+*Modelo: all democracies*
+
+No gráfico acima, dos resíduos pelos valores ajustados, já foi possível notar que o modelo erra nos extremos. No gráfico que plotamos abaixo, temos a raiz quadrada dos resíduos pelos valores ajustados, que facilita a identificação de padrões nos resíduos. Novamente, notamos uma variação na distribuição dos resíduos nos extremos.
+
+```{r, fig.align='center', fig.height=4, fig.width=6, out.width="65%"}
+diagnostic_full[[3]]
+```
+
+*Modelo: post 1974*
+
+Novamente, a distribuição dos pontos revela heterogeneidade na distribuição dos pontos. A linha verde plotada no gráfico demonstra que o modelo erra para mais ou para menos ao longo dos valores dos preditores.
+
+```{r, fig.align='center', fig.height=4, fig.width=6, out.width="65%"}
+diagnostic_post1974[[3]]
+```
+
+### 3. Normalidade dos resíduos
+
+Satisfazer o pressuposto de que os resíduos do modelo seguem uma distribuição normal garante que as estimativas são consistentes. Aqui, esperamos encontrar os pontos sobrepostos na reta horizontal.
+
+*Modelo: all democracies*
+
+A distribuição dos pontos se sobrepõe à reta verde de referência, mas se afastam dela nos extremos.
+
+```{r, fig.align='center', fig.height=4, fig.width=6, out.width="65%"}
+diagnostic_full[[6]]
+```
+
+*Modelo: post 1974*
+
+A mesma interpretação vale para este modelo. As estimativas são afetadas nos valores extremos.
+
+```{r, fig.align='center', fig.height=4, fig.width=6, out.width="65%"}
+diagnostic_post1974[[6]]
+```
+
+### 4. Resíduos outliers ou pontos de alavancagem
+
+Já rodamos uma análise dos outliers mais acima, considerando a base de dados com todos os valores. Conforme foi demonstrado, nenhum valor influente foi detectado. Supõe-se, portanto, que o mesmo vale para o conjunto de dados sem aqueles valores considerados outliers pelos autores.
+
+### 5. Ausência de multicolinearidade
+
+Multicolinearidade se refere às variáveis independentes que são correlacionadas entre si. O pressuposto da regressão linear é de que isso não deve acontecer.
+
+*Modelo: all democracies*
+
+Todas as variáveis apresentam baixa colinearidade, com exceção das variáveis que foram interagidas. No entanto, isso não é um problema grave, porque é comum a existencia de multicolinearidade entre estas variáveis.
+
+```{r, fig.align='center', fig.height=4, fig.width=8, out.width="90%"}
+diagnostic_full[[5]]
+```
+
+*Modelo: post 1974*
+
+A mesma interpretação vale aqui.
+
+```{r, fig.align='center', fig.height=4, fig.width=8, out.width="90%"}
+diagnostic_post1974[[5]]
+```
+
+### Modelos com erro padrão robusto
+
+O modelos de regressão linear com erro padrão robusto são uma forma de lidar com a heterocedasticidade. Esses modelos garantem estimativas consistentes mesmo em cenários de violação do pressuposto de variância constante dos erros.
+
+Abaixo, replicamos os modelos apresentados pelos autores, mas com erro padrão robusto.
+
+```{r, results='asis'}
+# 
+full_robust_error <- coeftest(full, vcovHC(full, type = "HC3"))
+post1974_robust_error <- coeftest(post1974, vcovHC(full, type = "HC3"))
+
+# Tabela com os dois modelos
+stargazer::stargazer(full_robust_error, post1974_robust_error,
+  type = "latex",
+  style = "apsr",
+  font.size = "small",
+  title = "Modelos apresentados na tabela 2 (com erro padrão robusto)",
+  single.row = TRUE,
+  align = TRUE,
+  dep.var.labels.include = FALSE,
+  keep.stat = c("n", "rsq"),
+  header = FALSE,
+  notes.align = "r",
+  column.labels = c("Todas as democracias", "Pós-1974")
+)
+```
+
+Mesmo com erro padrão robusto, a variável *fund parity* continua sendo estatisticamente significante.
+
+### Análises adicionais
+
+Finalmente, vamos rodar três modelos que não foram apresentados no artigo, mas que consideramos importante para avaliar o papel dos "outliers". São modelos com as mesmas variáveis dos modelos principais, mas com mudanças na base de dados. Os modelos são os seguintes:
+
+-   Modelo 1: dados completos (considerando os "outliers" excluídos pelos autores);
+-   Modelo 2: dados sem os outliers que foram revelados pelo gráfico box-plot da variável *postenp* (ou seja, sem os outliers que nossa análise revelou);
+-   Modelo 3: dados sem os outliers da variável *postenp* e somente com democracias recentes
+
+```{r, results='asis'}
+# Modelo (all democracies with outliers)
+full_raw_data <- lm(
+  postenp ~ fundparity4
+    + demyears
+    + fed
+    + pres
+    + log(avemag)
+    + fract
+    + log(avemag):fract,
+  data = raw_data
+)
+
+# Data without our outliers
+our_outliers <- subset(raw_data, postenp <= 10)
+
+# Modelo (all democracies without our outliers)
+full_our_outliers <- lm(
+  postenp ~ fundparity4
+    + demyears
+    + fed
+    + pres
+    + log(avemag)
+    + fract
+    + log(avemag):fract,
+  data = our_outliers
+)
+
+# Data just with democracies post 1974
+later1974_wo <- our_outliers |> 
+  filter(demin > 1973)
+
+# Modelo (democracies post 1974 without our outliers)
+full_post1974_our_outliers <- lm(
+  postenp ~ fundparity4
+    + demyears
+    + fed
+    + pres
+    + log(avemag)
+    + fract
+    + log(avemag):fract,
+  data = later1974_wo
+)
+
+# Tabela com os dois modelos
+stargazer::stargazer(full_raw_data, full_our_outliers, full_post1974_our_outliers,
+  type = "latex",
+  style = "jpam",
+  font.size = "small",
+  title = "Verificando o peso dos outliers",
+  single.row = TRUE,
+  # align = TRUE,
+  dep.var.labels.include = FALSE,
+  keep.stat = c("n", "rsq"),
+  header = FALSE,
+  notes.align = "r",
+  column.labels = ""
+  # column.labels = c("Modelo 1", "Modelo 2", "Modelo 3")
+)
+```
+
+O modelo com todos os dados não só altera o valor estimado para a variável *fund parity*, como também a sua significância estatística, que passa de 0,01 para 0,1. Por outro lado, no modelo sem os outliers identificados por nós a variável *fund parity* volta a ser estatiscamente significativa, mas ao nível de 0,05. Já no modelo sem os outliers e somente com as democracies recentes, a variável *fund parity* volta a perder significância estatística. Isso demonstra que os coeficientes parecem ser bastante afetados pela presença ou ausência de valores outliers no conjunto de dados.
+
+### Conclusões
+
+Os resultados da replicação são consistentes com os resultados apresentados no artigo. No entanto, os principais modelos apresentados (all democracies e post 1974) violam alguns pressupostos da regresão linear. Além disso, os outliers mostraram-se casos cruciais na interpretação dos coeficientes desses modelos. Rodar o modelo com todos os dados compromete a significância estatística da principal variável indepedente dos autores: a *fund parity* (paridade de fundos). Portanto, a lacuna que fica é compreender quais os critérios que os autores utilizaram para a identificação dos valores que afirmam serem outliers.
+
+Cabe também pontuar que ao longo do artigo não fica explicíto se o propósito é desenvolver um argumento causal ou preditivo. A interpretação que os autores fazem dos modelos sugere efeitos preditivos, mas ao lidarem com a questão da endogeneidade, a linguagem utilizada é a da causalidade.
+
+------------------------------------------------------------------------
+
+### Referências
+
+Potter, Joshua D., and Margit Tavits. 2015. "The Impact of Campaign Finance Laws on Party Competition." British Journal of Political Science 45(1): 73--95. doi: 10.1017/S0007123413000227.
+
+Galdino, Manoel (2019). **Introdução à Regressão para Ciências Sociais**.
+
+**Checking model assumption - linear models**. Disponível em: <https://easystats.github.io/performance/articles/check_model.html>. Acesso em: 5 jan. 2024.
+
+**Understanding Diagnostic Plots for Linear Regression Analysis**. Disponível em: <https://library.virginia.edu/data/articles/diagnostic-plots>. Acesso em: 5 jan. 2024.
