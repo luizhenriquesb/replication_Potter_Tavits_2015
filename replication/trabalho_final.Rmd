@@ -587,11 +587,11 @@ Já rodamos uma análise dos outliers mais acima, considerando a base de dados c
 
 ### 5. Ausência de multicolinearidade
 
-Multicolinearidade se refere às variáveis independentes que são correlacionadas entre si. O pressuposto da regressão linear é de que isso não deve acontecer.
+Multicolinearidade se refere às variáveis independentes correlacionadas entre si. O pressuposto da regressão linear é de que isso não deve acontecer.
 
 **Modelo:** *all democracies*
 
-Todas as variáveis apresentam baixa colinearidade, com exceção das variáveis que foram interagidas. No entanto, isso não é um problema grave, porque é comum a existencia de multicolinearidade entre estas variáveis.
+Todas as variáveis apresentam baixa colinearidade, com exceção das variáveis que foram interagidas. No entanto, isso não é um problema grave, porque é comum a existência de multicolinearidade entre estas variáveis.
 
 ```{r, fig.align='center', fig.height=4, fig.width=8, out.width="90%"}
 diagnostic_full[[5]]
@@ -607,7 +607,7 @@ diagnostic_post1974[[5]]
 
 ### Modelos com erro padrão robusto
 
-O modelos de regressão linear com erro padrão robusto são uma forma de lidar com a heterocedasticidade. Esses modelos garantem estimativas consistentes mesmo em cenários de violação do pressuposto de variância constante dos erros. Abaixo, replicamos os modelos apresentados pelos autores, mas com erro padrão robusto.
+Os modelos de regressão linear com erro padrão robusto são uma forma de lidar com a heterocedasticidade. Esses modelos garantem estimativas consistentes mesmo em cenários de violação do pressuposto de variância constante dos erros. Abaixo, replicamos os modelos apresentados pelos autores, mas com erro padrão robusto.
 
 ```{r, results='asis'}
 # 
@@ -634,11 +634,11 @@ Mesmo com erro padrão robusto, a variável *fund parity* continua sendo estatis
 
 ### Análises adicionais
 
-Finalmente, vamos rodar três modelos que não foram apresentados no artigo, mas que consideramos importante para avaliar o papel dos "outliers". São modelos com as mesmas variáveis dos modelos principais, mas com mudanças na base de dados. Os modelos são os seguintes:
+Finalmente, vamos rodar três modelos que não foram apresentados no artigo, mas que consideramos importantes para avaliar o papel dos "outliers". São modelos com as mesmas variáveis dos modelos principais, mas com mudanças na base de dados. Os modelos são os seguintes:
 
 -   Modelo 1: dados completos (considerando os "outliers" excluídos pelos autores);
 -   Modelo 2: dados sem os outliers que foram revelados pelo gráfico box-plot da variável *postenp* (ou seja, sem os outliers que nossa análise revelou);
--   Modelo 3: dados sem os outliers da variável *postenp* e somente com democracias recentes
+-   Modelo 3: dados sem os outliers da variável *postenp* e somente com democracias recentes.
 
 ```{r, results='asis'}
 # Modelo (all democracies with outliers)
@@ -701,13 +701,13 @@ stargazer::stargazer(full_raw_data, full_our_outliers, full_post1974_our_outlier
 )
 ```
 
-O modelo com todos os dados não só altera o valor estimado para a variável *fund parity*, como também a sua significância estatística, que passa de 0,01 para 0,1. Por outro lado, no modelo sem os outliers identificados por nós a variável *fund parity* volta a ser estatiscamente significativa, mas ao nível de 0,05. Já no modelo sem os outliers e somente com as democracies recentes, a variável *fund parity* volta a perder significância estatística. Isso demonstra que os coeficientes parecem ser bastante afetados pela presença ou ausência de valores outliers no conjunto de dados.
+O modelo com todos os dados não só altera o valor estimado para a variável *fund parity*, como também a sua significância estatística, que passa de 0,01 para 0,1. Por outro lado, no modelo sem os outliers identificados por nós, a variável *fund parity* volta a ser estatisticamente significativa, mas ao nível de 0,05. Já no modelo sem os outliers e somente com as democracias recentes, a variável *fund parity* volta a perder significância estatística. Isso demonstra que os coeficientes parecem ser bastante afetados pela presença ou ausência de valores outliers no conjunto de dados.
 
 ### Conclusões
 
-Os resultados da replicação são consistentes com os resultados apresentados no artigo. No entanto, os principais modelos apresentados (all democracies e post 1974) violam alguns pressupostos da regresão linear. Além disso, os outliers mostraram-se casos cruciais na interpretação dos coeficientes desses modelos. Rodar o modelo com todos os dados compromete a significância estatística da principal variável indepedente dos autores: a *fund parity* (paridade de fundos). Portanto, a lacuna que fica é compreender quais os critérios que os autores utilizaram para a identificação dos valores que afirmam serem outliers.
+Os resultados da replicação são consistentes com os resultados apresentados no artigo. No entanto, os principais modelos apresentados (all democracies e post 1974) violam alguns pressupostos da regressão linear. Além disso, os outliers mostraram-se casos cruciais na interpretação dos coeficientes desses modelos. Rodar o modelo com todos os dados compromete a significância estatística da principal variável independente dos autores: a *fund parity* (paridade de fundos). Portanto, a lacuna que fica é compreender quais os critérios que os autores utilizaram para a identificação dos valores que afirmam serem outliers.
 
-Cabe também pontuar que ao longo do artigo não fica explicíto se o propósito é desenvolver um argumento causal ou preditivo. A interpretação que os autores fazem dos modelos sugere efeitos preditivos, mas ao lidarem com a questão da endogeneidade, a linguagem utilizada é a da causalidade.
+Cabe também pontuar que, ao longo do artigo, não fica claro se o propósito é desenvolver um argumento causal ou preditivo. A interpretação que os autores fazem dos modelos sugere efeitos preditivos, mas ao lidarem com a questão da endogeneidade, a linguagem utilizada é a da causalidade.
 
 ------------------------------------------------------------------------
 
