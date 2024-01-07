@@ -52,11 +52,11 @@ $$
 
 A base de dados utilizada pelos autores contém informações sobre 124 países. Além do número efetivo de cada país, dos critérios para a construção do índice de paridade de financiamento e do próprio índice, a base armazena algumas variáveis institucionais, como a forma do estado e o sistema de governo, e sociológicas, como as diferenças etnolinguísticas existentes no país.
 
-Além disso, os dados correspondem a dois momentos no tempo: 2003 e 2012. Mas isso não vale para todos os países. Isso porque os dados foram coletados por meio de fontes variadas. O número efetivo de partidos, por exemplo, foi obtido através de Gallagher e Mitchell (2008), complementado por dados disponibilizados por Adam Carr e pela European Elections Database. Já as observações a respeito do regime de financiamento das campanhas foram obtidas por meio do Internacional IDEA, pesquisa conduzida por Austin e Tjersnstrom (2003).
+Os dados também correspondem a dois momentos no tempo: 2003 e 2012. Mas isso não vale para todos os países. Isso porque os dados foram coletados por meio de fontes variadas. O número efetivo de partidos, por exemplo, foi obtido através de Gallagher e Mitchell (2008), complementado por dados disponibilizados por Adam Carr e pela European Elections Database. Já as observações a respeito do regime de financiamento das campanhas foram obtidas por meio do Internacional IDEA, pesquisa conduzida por Austin e Tjersnstrom (2003).
 
 ### Replicação dos resultados
 
-Os autores apresentam dois modelos no artigo. O primeiro com todas as democracias, exceto três casos considerados "outliers", e o segundo deles somente com países que se tornaram democracias depois de 1974, recorte temporal justificado por ser uma das maneiras de se lidar com uma suposta endogeneidade dos dados (voltaremos a isso mais à frente). Vamos fazer a replicação desses dois modelos e de outros que apresentados nas notas de rodapé. Antes disso, no entanto, vamos fazer uma análise para detectar potenciais outliers na base de dados e verificar se chegamos às mesmas conclusões dos autores.
+Os autores apresentam dois modelos no artigo. O primeiro com todas as democracias, exceto três casos considerados "outliers", e o segundo deles somente com países que se tornaram democracias depois de 1974, recorte temporal justificado por ser uma das maneiras de se lidar com uma suposta endogeneidade dos dados (voltaremos a isso mais adiante). Vamos fazer a replicação desses dois modelos e de outros que foram apresentados nas notas de rodapé. Antes disso, no entanto, vamos fazer uma análise para detectar potenciais outliers na base de dados e verificar se chegamos às mesmas conclusões dos autores.
 
 ```{r raw_data}
 # Dados completos
@@ -176,7 +176,7 @@ stargazer::stargazer(full, post1974,
 
 \FloatBarrier
 
-Os resultados da replicação estão em conformidade com os resultados apresentados pelos autores.[^3] A única diferença reside no fato de que, aqui, os coeficientes estão arrdondados em três casas decimais. Contudo, os resultados são essencialmente iguais.
+Os resultados da replicação estão em conformidade com os resultados apresentados pelos autores.[^3] A única diferença reside no fato de que, aqui, os coeficientes estão arredondados em três casas decimais. Contudo, os resultados são essencialmente iguais.
 
 [^3]: Esses modelos foram apresentados na tabela 2 do artigo.
 
@@ -512,7 +512,7 @@ O gráfico acima reproduz a figura 1 apresentada no artigo, demonstrando que, de
 
 ### Checagem dos pressupostos
 
-Vamos agora fazer a checagem dos dois principais modelos apresentados no artigo, isto é, o modelo com todas as democracias (*all democracies*) e o somente com as democracias recentes (*post 1974*)
+Vamos agora fazer a checagem dos dois principais modelos apresentados no artigo, isto é, o modelo com todas as democracias (*all democracies*) e o somente com as democracias recentes (*1974 and later*).
 
 ```{r}
 diagnostic_full <- plot(check_model(full, panel = FALSE))
@@ -521,21 +521,23 @@ diagnostic_post1974 <- plot(check_model(post1974, panel = FALSE))
 
 ### 1. Linearidade
 
+Supor linearidade significa que podemos descrever a relação entre a variável dependente e independente por meio de uma reta. Violar esse pressuposto implica na não consistência dos coeficientes.
+
 Um gráfico dos resíduos pelos valores ajustados, embora útil para verificar a homocedasticidade, é também utilizado para verificar se temos uma relação linear entre a variável dependente e as variáveis independentes. Para este caso, a linha verde plotada no gráfico deve ser aproximadamente horizontal.
 
-*Modelo: all democracies*
+**Modelo:** *all democracies*
 
 Ao analisar o gráfico abaixo, podemos perceber que a linha verde é aproximadamente horizontal, mas se afasta um pouco nas extremidades. No entanto, se considerarmos o erro padrão, a linha verde está dentro do intervalo da reta horizontal em toda sua extensão.
 
-```{r, fig.align='center', fig.height=3, fig.width=6, out.width="65%"}
+```{r, fig.align='center', fig.height=4, fig.width=6, out.width="65%"}
 diagnostic_full[[2]]
 ```
 
-*Modelo: Post 1974*
+**Modelo:** *1974 and later*
 
 No caso do modelo somente com as democracias recentes, temos a mesma interpretação do modelo acima, com a exceção de que, aqui, a linha verde se afasta menos da reta horizontal nos extremos.
 
-```{r, fig.align='center', fig.height=3, fig.width=6, out.width="65%"}
+```{r, fig.align='center', fig.height=4, fig.width=6, out.width="65%"}
 diagnostic_post1974[[2]]
 ```
 
@@ -543,7 +545,7 @@ diagnostic_post1974[[2]]
 
 Supor homocedasticidade significa que os resíduos variam ao longo dos valores preditos sem apresentarem qualquer padrão sistemático de variação. Aqui, os pontos devem se espalhar aleatoriamente em torno da reta.
 
-*Modelo: all democracies*
+**Modelo:** *all democracies*
 
 No gráfico acima, dos resíduos pelos valores ajustados, já foi possível notar que o modelo erra nos extremos. No gráfico que plotamos abaixo, temos a raiz quadrada dos resíduos pelos valores ajustados, que facilita a identificação de padrões nos resíduos. Novamente, notamos uma variação na distribuição dos resíduos nos extremos.
 
@@ -551,7 +553,7 @@ No gráfico acima, dos resíduos pelos valores ajustados, já foi possível nota
 diagnostic_full[[3]]
 ```
 
-*Modelo: post 1974*
+**Modelo:** *1974 and later*
 
 Novamente, a distribuição dos pontos revela heterogeneidade na distribuição dos pontos. A linha verde plotada no gráfico demonstra que o modelo erra para mais ou para menos ao longo dos valores dos preditores.
 
@@ -563,7 +565,7 @@ diagnostic_post1974[[3]]
 
 Satisfazer o pressuposto de que os resíduos do modelo seguem uma distribuição normal garante que as estimativas são consistentes. Aqui, esperamos encontrar os pontos sobrepostos na reta horizontal.
 
-*Modelo: all democracies*
+**Modelo:** *all democracies*
 
 A distribuição dos pontos se sobrepõe à reta verde de referência, mas se afastam dela nos extremos.
 
@@ -571,7 +573,7 @@ A distribuição dos pontos se sobrepõe à reta verde de referência, mas se af
 diagnostic_full[[6]]
 ```
 
-*Modelo: post 1974*
+**Modelo:** *1974 and later*
 
 A mesma interpretação vale para este modelo. As estimativas são afetadas nos valores extremos.
 
@@ -587,7 +589,7 @@ Já rodamos uma análise dos outliers mais acima, considerando a base de dados c
 
 Multicolinearidade se refere às variáveis independentes que são correlacionadas entre si. O pressuposto da regressão linear é de que isso não deve acontecer.
 
-*Modelo: all democracies*
+**Modelo:** *all democracies*
 
 Todas as variáveis apresentam baixa colinearidade, com exceção das variáveis que foram interagidas. No entanto, isso não é um problema grave, porque é comum a existencia de multicolinearidade entre estas variáveis.
 
@@ -595,7 +597,7 @@ Todas as variáveis apresentam baixa colinearidade, com exceção das variáveis
 diagnostic_full[[5]]
 ```
 
-*Modelo: post 1974*
+**Modelo:** *1974 and later*
 
 A mesma interpretação vale aqui.
 
