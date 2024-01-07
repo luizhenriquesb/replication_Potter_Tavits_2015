@@ -694,9 +694,9 @@ full_post1974_our_outliers <- lm(
 # Tabela com os dois modelos
 stargazer::stargazer(full_raw_data, full_our_outliers, full_post1974_our_outliers,
   type = "latex",
-  style = "apsr",
+  style = "demography",
   font.size = "small",
-  title = "Verificando o peso dos outliers",
+  title = "Verificando a influência dos outliers",
   single.row = TRUE,
   # align = TRUE,
   dep.var.labels.include = FALSE,
@@ -704,8 +704,7 @@ stargazer::stargazer(full_raw_data, full_our_outliers, full_post1974_our_outlier
   header = FALSE,
   notes.align = "r",
   column.labels = ""
-  # column.labels = c("Modelo 1", "Modelo 2", "Modelo 3")
-)
+  )
 ```
 
 O modelo com todos os dados não só altera o valor estimado para a variável *fund parity*, como também a sua significância estatística, que passa de 0,01 para 0,1. Por outro lado, no modelo sem os outliers identificados por nós, a variável *fund parity* volta a ser estatisticamente significativa, mas ao nível de 0,05. Já no modelo sem os outliers e somente com as democracias recentes, a variável *fund parity* volta a perder significância estatística. Isso demonstra que os coeficientes parecem ser bastante afetados pela presença ou ausência de valores outliers no conjunto de dados.
@@ -716,9 +715,9 @@ Os resultados da replicação são consistentes com os resultados apresentados n
 
 Cabe também pontuar que, ao longo do artigo, não fica claro se o propósito é desenvolver um argumento causal ou preditivo. A interpretação que os autores fazem dos modelos sugere efeitos preditivos, mas ao lidarem com a questão da endogeneidade, a linguagem utilizada é a da causalidade: "[...] the direction of causality runs from fund parity to ENP" (Potter & Tavits, 2013).
 
-------------------------------------------------------------------------
+\newpage
 
-### Referências
+### REFERÊNCIAS BIBLIOGRÁFICAS
 
 **Checking model assumption - linear models**. Disponível em: <https://easystats.github.io/performance/articles/check_model.html>. Acesso em: 5 jan. 2024.
 
