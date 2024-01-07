@@ -60,7 +60,8 @@ Os autores apresentam dois modelos no artigo. O primeiro com todas as democracia
 
 ```{r raw_data}
 # Dados completos
-raw_data <- read_dta("data/potter_tavits_data.dta")
+raw_data <- read_dta("https://github.com/mgaldino/lab-regressao-aula/raw/main/trabalho%20final/1Potter_2015/potter_tavits_data.dta")
+
 ```
 
 ### Análise dos outliers
@@ -398,7 +399,7 @@ stargazer::stargazer(reg5, reg6, reg7, reg8,
 
 \FloatBarrier
 
-### 2. Diferenças entre as regras e a prática (nota de rodapé 43)
+### 2. Diferenças entre as regras e a sua aplicação (nota de rodapé 43)
 
 Na 43ª nota de rodapé, os autores chamam a atenção para as possíveis diferenças que podem existir entre as regras institucionais e os efeitos delas nas estratégias partidárias.
 
@@ -527,7 +528,7 @@ Um gráfico dos resíduos pelos valores ajustados, embora útil para verificar a
 
 **Modelo:** *all democracies*
 
-Ao analisar o gráfico abaixo, podemos perceber que a linha verde é aproximadamente horizontal, mas se afasta um pouco nas extremidades. No entanto, se considerarmos o erro padrão, a linha verde está dentro do intervalo da reta horizontal em toda sua extensão.
+Ao analisar o gráfico abaixo, podemos perceber que a linha verde é aproximadamente horizontal, mas apresenta curvas suaves e se afasta um pouco nas extremidades. No entanto, se considerarmos o erro padrão, a linha verde está dentro do intervalo da reta horizontal em toda sua extensão.
 
 ```{r, fig.align='center', fig.height=4, fig.width=6, out.width="65%"}
 diagnostic_full[[2]]
@@ -540,6 +541,8 @@ No caso do modelo somente com as democracias recentes, temos a mesma interpreta�
 ```{r, fig.align='center', fig.height=4, fig.width=6, out.width="65%"}
 diagnostic_post1974[[2]]
 ```
+
+Podemos dizer que os dois modelos parecem apresentar uma relação entre a variável dependente e as variáveis independentes que não é perfeitamente linear.
 
 ### 2. Homocedasticidade
 
@@ -561,13 +564,17 @@ Novamente, a distribuição dos pontos revela heterogeneidade na distribuição 
 diagnostic_post1974[[3]]
 ```
 
+Diante de heterocedasticidade, devemos rodar modelos com erro padrão robusto. Faremos isso mais adiante para verificar se os coeficientes estimados se alteram.
+
 ### 3. Normalidade dos resíduos
 
-Satisfazer o pressuposto de que os resíduos do modelo seguem uma distribuição normal garante que as estimativas são consistentes. Aqui, esperamos encontrar os pontos sobrepostos na reta horizontal.
+Satisfazer o pressuposto de que os resíduos do modelo seguem uma distribuição normal garante que as estimativas sejam consistentes. Aqui, esperamos encontrar os pontos sobrepostos na reta horizontal.
 
 **Modelo:** *all democracies*
 
-A distribuição dos pontos se sobrepõe à reta verde de referência, mas se afastam dela nos extremos.
+A distribuição dos pontos se sobrepõe à reta verde de referência, mas se afastam dela nos extremos. Isso acontece por serem "valores mais improváveis" e, portanto, "tendem a ficar um pouco mais distante da reta".[^5]
+
+[^5]: Galdino. CEF (capítulo 6). In: \_\_\_\_\_\_\_. Introdução à Regressão para Ciências Sociais.
 
 ```{r, fig.align='center', fig.height=4, fig.width=6, out.width="65%"}
 diagnostic_full[[6]]
@@ -591,7 +598,7 @@ Multicolinearidade se refere às variáveis independentes correlacionadas entre 
 
 **Modelo:** *all democracies*
 
-Todas as variáveis apresentam baixa colinearidade, com exceção das variáveis que foram interagidas. No entanto, isso não é um problema grave, porque é comum a existência de multicolinearidade entre estas variáveis.
+Todas as variáveis apresentam baixa colinearidade, com exceção das variáveis que foram interagidas. No entanto, essa situação é entre variáveis submetidas a interações ou transformações.
 
 ```{r, fig.align='center', fig.height=4, fig.width=8, out.width="90%"}
 diagnostic_full[[5]]
@@ -705,9 +712,9 @@ O modelo com todos os dados não só altera o valor estimado para a variável *f
 
 ### Conclusões
 
-Os resultados da replicação são consistentes com os resultados apresentados no artigo. No entanto, os principais modelos apresentados (all democracies e post 1974) violam alguns pressupostos da regressão linear. Além disso, os outliers mostraram-se casos cruciais na interpretação dos coeficientes desses modelos. Rodar o modelo com todos os dados compromete a significância estatística da principal variável independente dos autores: a *fund parity* (paridade de fundos). Portanto, a lacuna que fica é compreender quais os critérios que os autores utilizaram para a identificação dos valores que afirmam serem outliers.
+Os resultados da replicação são consistentes com os resultados apresentados no artigo. No entanto, os principais modelos apresentados (*all democracies* e *1974 and later*) revelam violações em alguns pressupostos da regressão linear, como a linearidade e normalidade (nos valores extremos) e a homocedasticidade. Além disso, os outliers mostraram-se casos cruciais na estimativa dos coeficientes desses modelos. Rodar o modelo com todos os dados compromete a significância estatística da principal variável independente dos autores: a *fund parity* (paridade de fundos). Portanto, há uma lacuna a ser preenchida para compreender os critérios adotados pelos autores na identificação dos valores que consideram outliers.
 
-Cabe também pontuar que, ao longo do artigo, não fica claro se o propósito é desenvolver um argumento causal ou preditivo. A interpretação que os autores fazem dos modelos sugere efeitos preditivos, mas ao lidarem com a questão da endogeneidade, a linguagem utilizada é a da causalidade.
+Cabe também pontuar que, ao longo do artigo, não fica claro se o propósito é desenvolver um argumento causal ou preditivo. A interpretação que os autores fazem dos modelos sugere efeitos preditivos, mas ao lidarem com a questão da endogeneidade, a linguagem utilizada é a da causalidade: "[...] the direction of causality runs from fund parity to ENP" (Potter & Tavits, 2013).
 
 ------------------------------------------------------------------------
 
@@ -715,8 +722,10 @@ Cabe também pontuar que, ao longo do artigo, não fica claro se o propósito é
 
 **Checking model assumption - linear models**. Disponível em: <https://easystats.github.io/performance/articles/check_model.html>. Acesso em: 5 jan. 2024.
 
+Figueiredo Filho, Dalson Britto. **Métodos quantitativos em ciência política**. Curitiba: InterSaberes, 2019.
+
 Galdino, Manoel (2019). **Introdução à Regressão para Ciências Sociais**.
 
-Potter, Joshua and Tavits, Margit . 2015. "The Impact of Campaign Finance Laws on Party Competition." British Journal of Political Science 45(1): 73--95. doi: 10.1017/S0007123413000227.
+Potter, Joshua and Tavits, Margit. 2015. "The Impact of Campaign Finance Laws on Party Competition." British Journal of Political Science 45(1): 73--95. doi: 10.1017/S0007123413000227.
 
 **Understanding Diagnostic Plots for Linear Regression Analysis**. Disponível em: <https://library.virginia.edu/data/articles/diagnostic-plots>. Acesso em: 5 jan. 2024.

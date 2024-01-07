@@ -98,7 +98,7 @@ abline(a = 0.82, b = -0.04, lwd = 2)
 # model to ensure that all fund parity metric components are exerting similarly-signed 
 # influences (this model is mentioned in footnote 44)
 
-# OBS: acho que está se refereindo a nota 42
+# OBS: acho que está se referindo à nota 42
 
 components<-lm(postenp ~ directelig 
                + partyspend
