@@ -88,11 +88,6 @@ campaigns |>
   ) +
   theme_classic()
 
-interactions <- data.frame(
-  log_avemag_fract = log(campaigns$avemag) * campaigns$fract,
-  postenp = campaigns$postenp
-)
-
 # Linearidade da relação postenp x log(avemag):fract
 interactions <- data.frame(
   log_avemag_fract = log(campaigns$avemag) * campaigns$fract,
