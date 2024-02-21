@@ -2,7 +2,7 @@
 title: "Métodos Quantitativos em Ciência Política IV"
 subtitle: 'Replicação do artigo "O impacto das leis de financiamento de campanha na competição partidária" (Potter & Tavits, 2013)'
 author: "Luiz Henrique da Silva Batista (NUSP: 12687228)"
-output: pdf_document
+output: pdf_document 
 fontsize: 12pt
 header-includes: 
 - \usepackage{placeins}
